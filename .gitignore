@@ -1,0 +1,8 @@
+# Godot 4 cache / imported data
+.godot/
+/android/
+
+# Exports
+/builds/
+*.pck
+*.zip

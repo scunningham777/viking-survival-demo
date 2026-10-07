@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/world/world.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/props/campfire.tscn" id="2_campfire"]
+[ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4_hud"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="DayNightTint" type="CanvasModulate" parent="."]
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Campfire" parent="Entities" instance=ExtResource("2_campfire")]
+
+[node name="Player" parent="Entities" instance=ExtResource("3_player")]
+position = Vector2(0, 50)
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]

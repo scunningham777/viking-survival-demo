@@ -1,0 +1,138 @@
+extends Node
+## Headless smoke test: loads every scene, plays a few seconds of the world,
+## exercises combat/pickups/campfire, and exits non-zero on failure.
+##   godot --headless --path . res://tests/smoke_test.tscn
+
+const SCENES: PackedStringArray = [
+	"res://scenes/ui/main_menu.tscn",
+	"res://scenes/ui/sound_browser.tscn",
+	"res://scenes/world/world.tscn",
+]
+
+var _failures: PackedStringArray = []
+
+
+func _ready() -> void:
+	await _run()
+	for failure in _failures:
+		printerr("FAIL: ", failure)
+	print("SMOKE TEST ", "PASSED" if _failures.is_empty() else "FAILED (%d)" % _failures.size())
+	get_tree().quit(0 if _failures.is_empty() else 1)
+
+
+func _check(condition: bool, message: String) -> void:
+	if not condition:
+		_failures.append(message)
+
+
+func _run() -> void:
+	# Audio: every event in the bank should resolve, all but music should have placeholder audio.
+	var ids := AudioManager.get_event_ids()
+	_check(ids.size() >= 20, "expected >= 20 sound events, got %d" % ids.size())
+	for id in ids:
+		var event := AudioManager.get_event(id)
+		if not String(id).begins_with("music_"):
+			_check(not event.streams.is_empty(), "event '%s' has no audio" % id)
+	_check(AudioManager.play(&"ui_click") != null, "play(ui_click) returned null")
+	_check(AudioManager.play_at(&"wolf_growl", Vector2.ZERO) != null, "play_at(wolf_growl) returned null")
+
+	for path in SCENES:
+		var packed := load(path) as PackedScene
+		_check(packed != null, "could not load " + path)
+		if packed == null:
+			continue
+		var scene := packed.instantiate()
+		add_child(scene)
+		await _frames(10)
+		if path.ends_with("world.tscn"):
+			await _exercise_world(scene)
+		if path.ends_with("sound_browser.tscn"):
+			_check(scene.get_node("%EventList").get_child_count() == ids.size(), "sound browser row count mismatch")
+		scene.queue_free()
+		await _frames(2)
+
+
+func _exercise_world(world: Node) -> void:
+	var player := world.get_node("Entities/Player") as Player
+	var campfire := world.get_node("Entities/Campfire")
+	_check(world.get_tree().get_node_count_in_group(&"wolves") == 0, "wolves present at start")
+	_check(world.get_node("Entities").get_child_count() > 50, "trees were not scattered")
+
+	# Walk into a tree and chop until it falls.
+	var tree := _nearest_tree(world, player)
+	player.global_position = tree.global_position + Vector2(0, 20)
+	player.facing = Vector2.UP
+	await _frames(3)
+	for i in 6:
+		player._attack_cooldown = 0.0
+		player._attack()
+		await _seconds(0.15)
+	_check(not is_instance_valid(tree), "tree did not fall after 6 chops")
+	await _collect_pickups(world, player)
+	_check(GameState.count(&"wood") >= 1, "wood was not picked up (have %d)" % GameState.count(&"wood"))
+
+	# Feed the campfire.
+	var fuel_before: float = campfire.fuel
+	player.global_position = campfire.global_position + Vector2(0, 25)
+	await _frames(3)
+	player._interact()
+	_check(campfire.fuel > fuel_before, "campfire fuel did not increase")
+
+	# Spawn a wolf next to the player, kill it, collect the meat, eat it.
+	world.spawn_wolf()
+	var wolf := world.get_tree().get_first_node_in_group(&"wolves") as Node2D
+	_check(wolf != null, "spawn_wolf() did not add a wolf")
+	if wolf:
+		player.global_position = Vector2(300, 300)
+		wolf.global_position = player.global_position + Vector2(0, -22)
+		player.facing = Vector2.UP
+		await _frames(3)
+		for i in 4:
+			if not is_instance_valid(wolf):
+				break
+			wolf.global_position = player.global_position + Vector2(0, -22)
+			player._attack_cooldown = 0.0
+			player._attack()
+			await _seconds(0.15)
+		_check(not is_instance_valid(wolf), "wolf survived 4 hits")
+		await _collect_pickups(world, player)
+		_check(GameState.count(&"meat") == 1, "meat was not picked up")
+		player.hunger = 10.0
+		player._eat()
+		_check(player.hunger > 10.0 and GameState.count(&"meat") == 0, "eating meat failed")
+
+	# Night transition and death flow.
+	world._begin_phase(1, true)
+	_check(GameState.is_night, "night did not start")
+	player.take_hit(1000.0, player)
+	await _frames(3)
+	_check(player.is_dead, "player did not die")
+	_check(world.get_node("HUD/Root/GameOverPanel").visible, "game over panel not shown")
+
+
+## Waits for pickups to pop out and arm, then walks the player over each one.
+func _collect_pickups(world: Node, player: Node2D) -> void:
+	await _seconds(0.5)
+	for child in world.get_node("Entities").get_children():
+		if child is Pickup:
+			player.global_position = child.global_position
+			await _frames(3)
+
+
+func _nearest_tree(world: Node, player: Node2D) -> Node2D:
+	var best: Node2D
+	for child in world.get_node("Entities").get_children():
+		if child.has_method(&"take_hit") and child is StaticBody2D:
+			if best == null or child.global_position.distance_to(player.global_position) \
+					< best.global_position.distance_to(player.global_position):
+				best = child
+	return best
+
+
+func _frames(count: int) -> void:
+	for i in count:
+		await get_tree().physics_frame
+
+
+func _seconds(sec: float) -> void:
+	await get_tree().create_timer(sec).timeout

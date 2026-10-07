@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/props/pine_tree.gd" id="1_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trunk"]
+radius = 7.0
+
+[node name="PineTree" type="StaticBody2D"]
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_trunk")

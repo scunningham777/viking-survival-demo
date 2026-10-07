@@ -1,0 +1,308 @@
+[gd_resource type="Resource" script_class="SoundBank" format=3]
+
+[ext_resource type="Script" path="res://audio/sound_bank.gd" id="1_bank"]
+[ext_resource type="Script" path="res://audio/sound_event.gd" id="2_event"]
+
+[sub_resource type="Resource" id="SoundEvent_ambience_wind"]
+script = ExtResource("2_event")
+id = &"ambience_wind"
+bus = &"Ambience"
+volume_db = -8.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 900.0
+notes = "Looping wind bed. Long files (30s+) work best."
+
+[sub_resource type="Resource" id="SoundEvent_axe_hit_wood"]
+script = ExtResource("2_event")
+id = &"axe_hit_wood"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.06
+volume_jitter_db = 1.0
+min_interval_sec = 0.0
+max_instances = 3
+max_distance = 900.0
+notes = "Axe chopping into a tree trunk."
+
+[sub_resource type="Resource" id="SoundEvent_axe_swing"]
+script = ExtResource("2_event")
+id = &"axe_swing"
+bus = &"SFX"
+volume_db = -3.0
+pitch_jitter = 0.08
+volume_jitter_db = 1.5
+min_interval_sec = 0.0
+max_instances = 2
+max_distance = 900.0
+notes = "Whoosh of the axe swing (plays before the impact)."
+
+[sub_resource type="Resource" id="SoundEvent_campfire_add_wood"]
+script = ExtResource("2_event")
+id = &"campfire_add_wood"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.05
+volume_jitter_db = 1.0
+min_interval_sec = 0.0
+max_instances = 2
+max_distance = 600.0
+notes = "Log dropped onto a burning fire."
+
+[sub_resource type="Resource" id="SoundEvent_campfire_extinguish"]
+script = ExtResource("2_event")
+id = &"campfire_extinguish"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.03
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 700.0
+notes = "Fire dying out / hiss."
+
+[sub_resource type="Resource" id="SoundEvent_campfire_ignite"]
+script = ExtResource("2_event")
+id = &"campfire_ignite"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.03
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 700.0
+notes = "Fire catching / whoosh."
+
+[sub_resource type="Resource" id="SoundEvent_campfire_loop"]
+script = ExtResource("2_event")
+id = &"campfire_loop"
+bus = &"Ambience"
+volume_db = -2.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 0
+max_distance = 450.0
+notes = "Positional crackle loop while the fire burns."
+
+[sub_resource type="Resource" id="SoundEvent_eat"]
+script = ExtResource("2_event")
+id = &"eat"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.08
+volume_jitter_db = 1.0
+min_interval_sec = 0.2
+max_instances = 1
+max_distance = 900.0
+notes = "Eating / chewing."
+
+[sub_resource type="Resource" id="SoundEvent_footstep"]
+script = ExtResource("2_event")
+id = &"footstep"
+bus = &"SFX"
+volume_db = -8.0
+pitch_jitter = 0.1
+volume_jitter_db = 2.0
+min_interval_sec = 0.0
+max_instances = 2
+max_distance = 900.0
+notes = "Player footsteps. More variations = less repetition."
+
+[sub_resource type="Resource" id="SoundEvent_music_day"]
+script = ExtResource("2_event")
+id = &"music_day"
+bus = &"Music"
+volume_db = -6.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 0
+max_distance = 900.0
+notes = "Daytime music loop."
+
+[sub_resource type="Resource" id="SoundEvent_music_menu"]
+script = ExtResource("2_event")
+id = &"music_menu"
+bus = &"Music"
+volume_db = -6.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 0
+max_distance = 900.0
+notes = "Main menu music."
+
+[sub_resource type="Resource" id="SoundEvent_music_night"]
+script = ExtResource("2_event")
+id = &"music_night"
+bus = &"Music"
+volume_db = -6.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 0
+max_distance = 900.0
+notes = "Night / danger music loop."
+
+[sub_resource type="Resource" id="SoundEvent_pickup_meat"]
+script = ExtResource("2_event")
+id = &"pickup_meat"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.05
+volume_jitter_db = 0.0
+min_interval_sec = 0.05
+max_instances = 2
+max_distance = 900.0
+notes = "Picking up meat."
+
+[sub_resource type="Resource" id="SoundEvent_pickup_wood"]
+script = ExtResource("2_event")
+id = &"pickup_wood"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.05
+volume_jitter_db = 0.0
+min_interval_sec = 0.05
+max_instances = 2
+max_distance = 900.0
+notes = "Picking up wood."
+
+[sub_resource type="Resource" id="SoundEvent_player_death"]
+script = ExtResource("2_event")
+id = &"player_death"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 900.0
+notes = "Player death cry."
+
+[sub_resource type="Resource" id="SoundEvent_player_hurt"]
+script = ExtResource("2_event")
+id = &"player_hurt"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.06
+volume_jitter_db = 1.0
+min_interval_sec = 0.25
+max_instances = 1
+max_distance = 900.0
+notes = "Player grunt when hit."
+
+[sub_resource type="Resource" id="SoundEvent_tree_fall"]
+script = ExtResource("2_event")
+id = &"tree_fall"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.04
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 2
+max_distance = 1000.0
+notes = "Tree creak and crash."
+
+[sub_resource type="Resource" id="SoundEvent_ui_click"]
+script = ExtResource("2_event")
+id = &"ui_click"
+bus = &"UI"
+volume_db = -4.0
+pitch_jitter = 0.03
+volume_jitter_db = 0.0
+min_interval_sec = 0.03
+max_instances = 2
+max_distance = 900.0
+notes = "Button press."
+
+[sub_resource type="Resource" id="SoundEvent_ui_hover"]
+script = ExtResource("2_event")
+id = &"ui_hover"
+bus = &"UI"
+volume_db = -12.0
+pitch_jitter = 0.03
+volume_jitter_db = 0.0
+min_interval_sec = 0.05
+max_instances = 1
+max_distance = 900.0
+notes = "Button hover."
+
+[sub_resource type="Resource" id="SoundEvent_war_horn"]
+script = ExtResource("2_event")
+id = &"war_horn"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 900.0
+notes = "Horn announcing nightfall."
+
+[sub_resource type="Resource" id="SoundEvent_wolf_bite"]
+script = ExtResource("2_event")
+id = &"wolf_bite"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.08
+volume_jitter_db = 1.0
+min_interval_sec = 0.0
+max_instances = 3
+max_distance = 700.0
+notes = "Wolf bite / snap."
+
+[sub_resource type="Resource" id="SoundEvent_wolf_death"]
+script = ExtResource("2_event")
+id = &"wolf_death"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.06
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 3
+max_distance = 800.0
+notes = "Wolf death whine."
+
+[sub_resource type="Resource" id="SoundEvent_wolf_growl"]
+script = ExtResource("2_event")
+id = &"wolf_growl"
+bus = &"SFX"
+volume_db = -3.0
+pitch_jitter = 0.1
+volume_jitter_db = 2.0
+min_interval_sec = 0.4
+max_instances = 2
+max_distance = 600.0
+notes = "Wolf growl while hunting."
+
+[sub_resource type="Resource" id="SoundEvent_wolf_howl"]
+script = ExtResource("2_event")
+id = &"wolf_howl"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.08
+volume_jitter_db = 0.0
+min_interval_sec = 1.0
+max_instances = 2
+max_distance = 1400.0
+notes = "Howl when a wolf appears. Long range on purpose."
+
+[sub_resource type="Resource" id="SoundEvent_wolf_hurt"]
+script = ExtResource("2_event")
+id = &"wolf_hurt"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.08
+volume_jitter_db = 1.0
+min_interval_sec = 0.0
+max_instances = 3
+max_distance = 700.0
+notes = "Wolf yelp when hit."
+
+[resource]
+script = ExtResource("1_bank")
+events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt")])
