@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c4gqu2n4p6cde"]
 
-[ext_resource type="Script" path="res://scenes/actors/player.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://b8ipll4jqm624" path="res://scenes/actors/player.gd" id="1_script"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 9.0
@@ -8,23 +8,23 @@ radius = 9.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
 radius = 28.0
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=2080902955 groups=["player"]]
 collision_layer = 2
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1880359264]
 shape = SubResource("CircleShape2D_body")
 
-[node name="InteractArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1727115317]
 collision_layer = 0
 collision_mask = 16
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=846319751]
 shape = SubResource("CircleShape2D_interact")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1353814229]
 position_smoothing_enabled = true
 position_smoothing_speed = 6.0

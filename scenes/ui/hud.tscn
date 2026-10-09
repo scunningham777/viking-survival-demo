@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bb06oafumu5j5"]
 
-[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://ypq0kbp8sb7t" path="res://scenes/ui/hud.gd" id="1_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
 bg_color = Color(0.08, 0.08, 0.1, 0.75)
@@ -11,10 +11,10 @@ bg_color = Color(0.78, 0.2, 0.2, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hunger"]
 bg_color = Color(0.85, 0.6, 0.2, 1)
 
-[node name="HUD" type="CanvasLayer"]
+[node name="HUD" type="CanvasLayer" unique_id=2116542161]
 script = ExtResource("1_script")
 
-[node name="Root" type="Control" parent="."]
+[node name="Root" type="Control" parent="." unique_id=433075401]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,7 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Stats" type="VBoxContainer" parent="Root"]
+[node name="Stats" type="VBoxContainer" parent="Root" unique_id=1203235612]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -32,11 +32,11 @@ offset_bottom = 90.0
 mouse_filter = 2
 theme_override_constants/separation = 2
 
-[node name="HealthLabel" type="Label" parent="Root/Stats"]
+[node name="HealthLabel" type="Label" parent="Root/Stats" unique_id=1362569878]
 layout_mode = 2
 text = "Health"
 
-[node name="HealthBar" type="ProgressBar" parent="Root/Stats"]
+[node name="HealthBar" type="ProgressBar" parent="Root/Stats" unique_id=1688881754]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 7)
 layout_mode = 2
@@ -46,11 +46,11 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_health")
 value = 100.0
 show_percentage = false
 
-[node name="HungerLabel" type="Label" parent="Root/Stats"]
+[node name="HungerLabel" type="Label" parent="Root/Stats" unique_id=1976421072]
 layout_mode = 2
 text = "Hunger"
 
-[node name="HungerBar" type="ProgressBar" parent="Root/Stats"]
+[node name="HungerBar" type="ProgressBar" parent="Root/Stats" unique_id=1527141353]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 7)
 layout_mode = 2
@@ -60,12 +60,12 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_hunger")
 value = 100.0
 show_percentage = false
 
-[node name="InventoryLabel" type="Label" parent="Root/Stats"]
+[node name="InventoryLabel" type="Label" parent="Root/Stats" unique_id=1614962285]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Wood 0    Meat 0"
 
-[node name="DayLabel" type="Label" parent="Root"]
+[node name="DayLabel" type="Label" parent="Root" unique_id=2127303551]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
@@ -79,7 +79,7 @@ grow_horizontal = 0
 text = "Day 1 – Day"
 horizontal_alignment = 2
 
-[node name="MessageLabel" type="Label" parent="Root"]
+[node name="MessageLabel" type="Label" parent="Root" unique_id=564107621]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
@@ -90,7 +90,8 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 
-[node name="HintLabel" type="Label" parent="Root"]
+[node name="HintLabel" type="Label" parent="Root" unique_id=1672928741]
+modulate = Color(1, 1, 1, 0.7)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -100,11 +101,10 @@ offset_top = -20.0
 offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 0
-modulate = Color(1, 1, 1, 0.7)
-text = "WASD move  ·  Space / click swing axe  ·  E feed fire  ·  F eat  ·  Esc menu"
+text = "WASD move  ·  Space / click swing axe  ·  F feed fire  ·  E eat  ·  Esc menu"
 horizontal_alignment = 1
 
-[node name="GameOverPanel" type="PanelContainer" parent="Root"]
+[node name="GameOverPanel" type="PanelContainer" parent="Root" unique_id=1298485338]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -120,29 +120,29 @@ offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Layout" type="VBoxContainer" parent="Root/GameOverPanel"]
+[node name="Layout" type="VBoxContainer" parent="Root/GameOverPanel" unique_id=1240730624]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 6
+alignment = 1
 
-[node name="Title" type="Label" parent="Root/GameOverPanel/Layout"]
+[node name="Title" type="Label" parent="Root/GameOverPanel/Layout" unique_id=1583049558]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "You have fallen"
 horizontal_alignment = 1
 
-[node name="SummaryLabel" type="Label" parent="Root/GameOverPanel/Layout"]
+[node name="SummaryLabel" type="Label" parent="Root/GameOverPanel/Layout" unique_id=1596225887]
 unique_name_in_owner = true
 layout_mode = 2
 text = "You survived 1 day."
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="Root/GameOverPanel/Layout"]
+[node name="RestartButton" type="Button" parent="Root/GameOverPanel/Layout" unique_id=585971690]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Try again (R)"
 
-[node name="MenuButton" type="Button" parent="Root/GameOverPanel/Layout"]
+[node name="MenuButton" type="Button" parent="Root/GameOverPanel/Layout" unique_id=2068479665]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Main menu"
