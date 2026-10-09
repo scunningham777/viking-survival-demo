@@ -63,7 +63,12 @@ func _on_hunger_changed(current: float, maximum: float) -> void:
 
 
 func _refresh_inventory() -> void:
-	_inventory_label.text = "Wood %d    Meat %d" % [GameState.count(&"wood"), GameState.count(&"meat")]
+	var herbs: PackedStringArray = []
+	for i in HerbPlant.KINDS.size():
+		var kind := HerbPlant.KINDS[i]
+		herbs.append("[%d] %s %d" % [i + 1, HerbPlant.display_name(kind), GameState.count(kind)])
+	_inventory_label.text = "Wood %d    Meat %d\n%s" % [
+			GameState.count(&"wood"), GameState.count(&"meat"), "  ".join(herbs)]
 
 
 func _on_time_of_day_changed(day: int, is_night: bool) -> void:

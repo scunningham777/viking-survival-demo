@@ -3,12 +3,17 @@ extends Node2D
 
 const WOLF_SCENE := preload("res://scenes/actors/wolf.tscn")
 const TREE_SCENE := preload("res://scenes/props/pine_tree.tscn")
+const HERB_SCENE := preload("res://scenes/props/herb_plant.tscn")
 const MAIN_MENU := "res://scenes/ui/main_menu.tscn"
 
 @export var world_half_size := Vector2(900, 900)
 @export var tree_count := 70
 ## Trees are kept out of this radius around the campfire.
 @export var clearing_radius := 150.0
+## Plants of each herb variety (see HerbPlant.KINDS).
+@export var herbs_per_kind := 7
+## Herbs are kept out of this radius around the campfire.
+@export var herb_clearing_radius := 70.0
 @export_group("Day / night")
 @export var day_length_sec := 60.0
 @export var night_length_sec := 45.0
@@ -35,6 +40,7 @@ func _ready() -> void:
 	GameState.reset()
 	_build_bounds()
 	_scatter_trees()
+	_scatter_herbs()
 	_configure_camera()
 	_hud.bind_player(_player)
 	_hud.restart_requested.connect(_restart)
@@ -122,6 +128,19 @@ func _scatter_trees() -> void:
 		tree.position = pos
 		_entities.add_child(tree)
 		placed += 1
+
+
+func _scatter_herbs() -> void:
+	for kind in HerbPlant.KINDS:
+		for i in herbs_per_kind:
+			var pos := Vector2.ZERO
+			while pos.length() < herb_clearing_radius:
+				pos = Vector2(randf_range(-world_half_size.x, world_half_size.x),
+						randf_range(-world_half_size.y, world_half_size.y))
+			var herb := HERB_SCENE.instantiate() as HerbPlant
+			herb.kind = kind
+			herb.position = pos
+			_entities.add_child(herb)
 
 
 func _build_bounds() -> void:

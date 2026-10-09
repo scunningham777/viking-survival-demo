@@ -111,6 +111,90 @@ max_instances = 2
 max_distance = 900.0
 notes = "Player footsteps. More variations = less repetition."
 
+[sub_resource type="Resource" id="SoundEvent_herb_angelica_pick"]
+script = ExtResource("2_event")
+id = &"herb_angelica_pick"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.06
+volume_jitter_db = 1.0
+min_interval_sec = 0.05
+max_instances = 2
+max_distance = 600.0
+notes = "Snapping a thick, hollow angelica stalk."
+
+[sub_resource type="Resource" id="SoundEvent_herb_angelica_use"]
+script = ExtResource("2_event")
+id = &"herb_angelica_use"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.08
+volume_jitter_db = 1.0
+min_interval_sec = 0.2
+max_instances = 1
+max_distance = 900.0
+notes = "Chewing a crunchy, fibrous angelica stalk (restores hunger)."
+
+[sub_resource type="Resource" id="SoundEvent_herb_wolfsbane_pick"]
+script = ExtResource("2_event")
+id = &"herb_wolfsbane_pick"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.05
+volume_jitter_db = 1.0
+min_interval_sec = 0.05
+max_instances = 2
+max_distance = 600.0
+notes = "Carefully picking a poisonous plant – slow rustle, ominous undertone."
+
+[sub_resource type="Resource" id="SoundEvent_herb_wolfsbane_use"]
+script = ExtResource("2_event")
+id = &"herb_wolfsbane_use"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.03
+volume_jitter_db = 0.0
+min_interval_sec = 0.2
+max_instances = 1
+max_distance = 900.0
+notes = "Smearing wolfsbane paste on the axe blade (poisoned axe buff)."
+
+[sub_resource type="Resource" id="SoundEvent_herb_wolfsbane_wear_off"]
+script = ExtResource("2_event")
+id = &"herb_wolfsbane_wear_off"
+bus = &"SFX"
+volume_db = -4.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 900.0
+notes = "Cue for the poisoned axe buff ending."
+
+[sub_resource type="Resource" id="SoundEvent_herb_yarrow_pick"]
+script = ExtResource("2_event")
+id = &"herb_yarrow_pick"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.06
+volume_jitter_db = 1.0
+min_interval_sec = 0.05
+max_instances = 2
+max_distance = 600.0
+notes = "Rustling leaves and a soft stem snap."
+
+[sub_resource type="Resource" id="SoundEvent_herb_yarrow_use"]
+script = ExtResource("2_event")
+id = &"herb_yarrow_use"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.06
+volume_jitter_db = 1.0
+min_interval_sec = 0.2
+max_instances = 1
+max_distance = 900.0
+notes = "Crushing leaves into a wound poultice (heals)."
+
 [sub_resource type="Resource" id="SoundEvent_music_day"]
 script = ExtResource("2_event")
 id = &"music_day"
@@ -305,4 +389,4 @@ notes = "Wolf yelp when hit."
 
 [resource]
 script = ExtResource("1_bank")
-events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt")])
+events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_herb_angelica_pick"), SubResource("SoundEvent_herb_angelica_use"), SubResource("SoundEvent_herb_wolfsbane_pick"), SubResource("SoundEvent_herb_wolfsbane_use"), SubResource("SoundEvent_herb_wolfsbane_wear_off"), SubResource("SoundEvent_herb_yarrow_pick"), SubResource("SoundEvent_herb_yarrow_use"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt")])

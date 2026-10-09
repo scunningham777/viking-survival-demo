@@ -135,6 +135,59 @@ def pickup_meat(rng, p):
                (scale(env(osc(0.18, lambda t: 240 * p - 80 * t), 0.01, 2), 0.6), 0))
 
 
+def rustle(sec, rng, brightness=0.5):
+    """Leafy rustle: highpassed noise with a few random swells."""
+    leaves = highpass(lowpass(noise(sec, rng), brightness), 0.08)
+    bumps = [0.4 + 0.6 * abs(math.sin(i / SR * math.pi * rng.uniform(9, 14))) for i in range(len(leaves))]
+    return swell([s * b for s, b in zip(leaves, bumps)], 0.4)
+
+
+def stem_snap(rng, p, freq=2400):
+    return mix((env(highpass(noise(0.02, rng), 0.5), 0.0005, 5), 0),
+               (scale(env(osc(0.03, lambda t: freq * p), 0.0005, 6), 0.4), 0))
+
+
+def herb_yarrow_pick(rng, p):
+    return mix((scale(rustle(0.35, rng, 0.45 * p), 0.6), 0), (stem_snap(rng, p), 0.22))
+
+
+def herb_angelica_pick(rng, p):
+    # Thick hollow stalk: a crack plus a short resonant "tock".
+    hollow = env(osc(0.16, lambda t: 520 * p * (1 - 0.15 * t)), 0.001, 4)
+    return mix((scale(rustle(0.3, rng, 0.35 * p), 0.5), 0), (stem_snap(rng, p, 1400), 0.18),
+               (scale(hollow, 0.8), 0.18))
+
+
+def herb_wolfsbane_pick(rng, p):
+    # Slow, careful rustle with a faint low drone – you're handling poison.
+    drone = swell(osc(0.6, lambda t: 82 * p + 4 * math.sin(t * 20)), 0.5)
+    return mix((scale(rustle(0.6, rng, 0.25 * p), 0.6), 0), (scale(drone, 0.35), 0), (stem_snap(rng, p, 1800), 0.42))
+
+
+def herb_yarrow_use(rng, p):
+    # Crushing leaves into a poultice: soft wet squishes.
+    squish = lambda: swell(lowpass(noise(0.12, rng), 0.06 * p), 0.3)
+    return mix((squish(), 0), (squish(), 0.16), (scale(squish(), 0.7), 0.3))
+
+
+def herb_angelica_use(rng, p):
+    # Crunchy, fibrous stalk chewing – brighter than eating meat.
+    crunch = lambda: env(highpass(lowpass(noise(0.06, rng), 0.7 * p), 0.1), 0.001, 3)
+    return mix((crunch(), 0), (crunch(), 0.11), (scale(crunch(), 0.8), 0.21), (scale(crunch(), 0.6), 0.33))
+
+
+def herb_wolfsbane_use(rng, p):
+    # Smearing paste on the blade: a gritty scrape plus an eerie falling tone.
+    scrape = swell(highpass(lowpass(noise(0.45, rng), 0.5), 0.15), 0.5)
+    eerie = swell(osc(0.9, lambda t: (660 - 260 * t) * p + 10 * math.sin(t * 45)), 0.2)
+    return mix((scrape, 0), (scale(eerie, 0.35), 0.2))
+
+
+def herb_wolfsbane_wear_off(rng, p):
+    tone = lambda f: env(osc(0.7, lambda t: f * p * (1 - 0.3 * t)), 0.01, 2)
+    return mix((scale(tone(520), 0.5), 0), (scale(tone(390), 0.4), 0.12))
+
+
 def wolf_growl(rng, p):
     rough = osc(0.8, lambda t: 75 * p + 10 * math.sin(t * 40), "saw")
     grit = lowpass(noise(0.8, rng), 0.05)
@@ -205,6 +258,10 @@ RECIPES = {
     "footstep": (footstep, 4), "axe_swing": (axe_swing, 3), "axe_hit_wood": (axe_hit_wood, 3),
     "tree_fall": (tree_fall, 1), "player_hurt": (player_hurt, 3), "player_death": (player_death, 1),
     "eat": (eat, 2), "pickup_wood": (pickup_wood, 2), "pickup_meat": (pickup_meat, 2),
+    "herb_yarrow_pick": (herb_yarrow_pick, 3), "herb_angelica_pick": (herb_angelica_pick, 3),
+    "herb_wolfsbane_pick": (herb_wolfsbane_pick, 2), "herb_yarrow_use": (herb_yarrow_use, 2),
+    "herb_angelica_use": (herb_angelica_use, 2), "herb_wolfsbane_use": (herb_wolfsbane_use, 1),
+    "herb_wolfsbane_wear_off": (herb_wolfsbane_wear_off, 1),
     "wolf_growl": (wolf_growl, 2), "wolf_howl": (wolf_howl, 2), "wolf_bite": (wolf_bite, 2),
     "wolf_hurt": (wolf_hurt, 2), "wolf_death": (wolf_death, 1), "campfire_ignite": (campfire_ignite, 1),
     "campfire_add_wood": (campfire_add_wood, 2), "campfire_extinguish": (campfire_extinguish, 1),

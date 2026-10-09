@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 ## Top-down viking. WASD / arrows / left stick to move, Space or click to swing
-## the axe, E to feed the campfire, F to eat meat.
+## the axe, E to feed the campfire / harvest herbs, F to eat meat, 1–3 to use herbs.
 ## Placeholder visuals are drawn in _draw(); swap in a Sprite2D/AnimatedSprite2D later.
 
 signal health_changed(current: float, maximum: float)
@@ -14,6 +14,11 @@ signal died
 @export var hunger_drain_per_sec := 1.2
 @export var starving_damage_per_sec := 4.0
 @export var meat_hunger_restore := 35.0
+@export_group("Herbs")
+@export var yarrow_heal := 30.0
+@export var angelica_hunger_restore := 20.0
+@export var wolfsbane_duration_sec := 20.0
+@export var wolfsbane_damage_multiplier := 2.0
 @export_group("Combat")
 @export var attack_damage := 25.0
 @export var attack_range := 34.0
@@ -32,6 +37,8 @@ var health: float
 var hunger: float
 var facing := Vector2.DOWN
 var is_dead := false
+## Seconds left on the wolfsbane-poisoned axe.
+var wolfsbane_time := 0.0
 
 var _attack_cooldown := 0.0
 var _swing_visual := 0.0
@@ -50,6 +57,7 @@ func _physics_process(delta: float) -> void:
 	_attack_cooldown = maxf(_attack_cooldown - delta, 0.0)
 	_swing_visual = maxf(_swing_visual - delta * 5.0, 0.0)
 	_hurt_flash = maxf(_hurt_flash - delta * 3.0, 0.0)
+	_update_wolfsbane(delta)
 	queue_redraw()
 	if is_dead:
 		return
@@ -75,6 +83,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		_interact()
 	elif event.is_action_pressed(&"eat"):
 		_eat()
+	else:
+		for i in HerbPlant.KINDS.size():
+			if event.is_action_pressed(StringName("use_herb_%d" % (i + 1))):
+				use_herb(HerbPlant.KINDS[i])
+				return
 
 
 func take_hit(amount: float, _source: Node2D) -> void:
@@ -122,9 +135,11 @@ func _attack() -> void:
 	await get_tree().create_timer(attack_impact_delay_sec).timeout
 	if is_dead:
 		return
+	var damage := attack_damage * (wolfsbane_damage_multiplier if wolfsbane_time > 0.0 else 1.0)
 	for body in _bodies_in_attack_range():
-		if body.has_method(&"take_hit") 				and facing.dot(global_position.direction_to(body.global_position)) >= attack_arc_dot:
-			body.take_hit(attack_damage, self)
+		if body.has_method(&"take_hit") \
+				and facing.dot(global_position.direction_to(body.global_position)) >= attack_arc_dot:
+			body.take_hit(damage, self)
 
 
 func _bodies_in_attack_range() -> Array[Node2D]:
@@ -162,6 +177,45 @@ func _eat() -> void:
 	AudioManager.play(&"eat")
 
 
+## Uses one herb from the inventory. Returns false (with a HUD message) if it had no effect.
+func use_herb(kind: StringName) -> bool:
+	if is_dead:
+		return false
+	var herb_name := HerbPlant.display_name(kind)
+	if GameState.count(kind) <= 0:
+		GameState.notify("No %s – look for it in the wilds" % herb_name.to_lower())
+		return false
+	match kind:
+		&"yarrow":
+			if health >= max_health - 1.0:
+				GameState.notify("Not wounded")
+				return false
+			heal(yarrow_heal)
+		&"angelica":
+			if hunger >= max_hunger - 1.0:
+				GameState.notify("Not hungry")
+				return false
+			hunger = minf(hunger + angelica_hunger_restore, max_hunger)
+			hunger_changed.emit(hunger, max_hunger)
+		&"wolfsbane":
+			wolfsbane_time = wolfsbane_duration_sec
+			GameState.notify("Axe poisoned with wolfsbane")
+		_:
+			return false
+	GameState.spend(kind)
+	AudioManager.play(StringName("herb_%s_use" % kind))
+	return true
+
+
+func _update_wolfsbane(delta: float) -> void:
+	if wolfsbane_time <= 0.0:
+		return
+	wolfsbane_time = maxf(wolfsbane_time - delta, 0.0)
+	if wolfsbane_time == 0.0 and not is_dead:
+		AudioManager.play(&"herb_wolfsbane_wear_off")
+		GameState.notify("The wolfsbane has worn off")
+
+
 func _die() -> void:
 	if is_dead:
 		return
@@ -188,4 +242,7 @@ func _draw() -> void:
 		angle += lerpf(1.3, -1.3, _swing_visual)
 	var tip := Vector2.from_angle(angle) * 22.0
 	draw_line(Vector2.ZERO, tip, Color(0.45, 0.3, 0.15), 3.0)
-	draw_circle(tip, 4.0, Color(0.82, 0.84, 0.88))
+	var blade := Color(0.82, 0.84, 0.88)
+	if wolfsbane_time > 0.0:
+		blade = blade.lerp(Color(0.55, 0.3, 0.85), 0.7)
+	draw_circle(tip, 4.0, blade)
