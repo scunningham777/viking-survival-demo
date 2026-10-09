@@ -12,7 +12,7 @@ var is_night := false
 
 
 func reset() -> void:
-	items = {&"wood": 0, &"meat": 0}
+	items = {&"wood": 0, &"meat": 0, &"yarrow": 0, &"angelica": 0, &"wolfsbane": 0}
 	day = 1
 	is_night = false
 	inventory_changed.emit()

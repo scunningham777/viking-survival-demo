@@ -11,13 +11,21 @@ sound before any real assets exist.
 1. Install [Godot 4.7.x](https://godotengine.org/download) (standard build, not .NET).
 2. Import → select this folder's `project.godot` → **Run** (F5).
 
-Controls: **WASD/arrows** move · **Space/left click** swing axe · **E** feed the fire · **F** eat meat · **Esc** menu ·
-gamepad supported.
+Controls: **WASD/arrows** move · **Space/left click** swing axe · **E** feed the fire / harvest herbs · **F** eat meat ·
+**1/2/3** use herbs (D-pad left/up/right) · **Esc** menu · gamepad supported.
 
 ### Loop
 
 Chop trees for wood → keep the campfire burning (it heals you) → wolves come at night (a war horn sounds) → kill them for
 meat → eat before hunger empties. Survive as many days as you can.
+
+Wild herbs grow around the map and regrow after you pick them:
+
+| Herb | Key | Effect | Sound events |
+|---|---|---|---|
+| Yarrow (white flowers) | 1 | Heals 30 | `herb_yarrow_pick`, `herb_yarrow_use` |
+| Angelica (tall green umbels) | 2 | Restores 20 hunger | `herb_angelica_pick`, `herb_angelica_use` |
+| Wolfsbane (purple spikes) | 3 | Poisons the axe: double damage for 20s | `herb_wolfsbane_pick`, `herb_wolfsbane_use`, `herb_wolfsbane_wear_off` |
 
 ## Swapping in the sound pack
 

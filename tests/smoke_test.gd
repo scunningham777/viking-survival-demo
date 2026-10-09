@@ -101,6 +101,8 @@ func _exercise_world(world: Node) -> void:
 		player._eat()
 		_check(player.hunger > 10.0 and GameState.count(&"meat") == 0, "eating meat failed")
 
+	await _exercise_herbs(world, player)
+
 	# Night transition and death flow.
 	world._begin_phase(1, true)
 	_check(GameState.is_night, "night did not start")
@@ -108,6 +110,48 @@ func _exercise_world(world: Node) -> void:
 	await _frames(3)
 	_check(player.is_dead, "player did not die")
 	_check(world.get_node("HUD/Root/GameOverPanel").visible, "game over panel not shown")
+
+
+## Harvests one plant of each herb variety with the interact key, then uses each herb.
+func _exercise_herbs(world: Node, player: Player) -> void:
+	for kind in HerbPlant.KINDS:
+		var herb := _isolated_herb(world, kind)
+		_check(herb != null, "no %s plants were scattered" % kind)
+		if herb == null:
+			continue
+		player.global_position = herb.global_position + Vector2(0, 8)
+		await _frames(3)
+		player._interact()
+		_check(GameState.count(kind) == 1, "%s was not harvested" % kind)
+		_check(not herb.is_grown, "%s plant did not become picked" % kind)
+		await _frames(3)
+		player._interact()
+		_check(GameState.count(kind) == 1, "picked %s plant was harvested twice" % kind)
+
+	player.health = 40.0
+	_check(player.use_herb(&"yarrow") and player.health > 40.0, "yarrow did not heal")
+	player.hunger = 40.0
+	_check(player.use_herb(&"angelica") and player.hunger > 40.0, "angelica did not restore hunger")
+	_check(player.use_herb(&"wolfsbane") and player.wolfsbane_time > 0.0, "wolfsbane did not poison the axe")
+	_check(not player.use_herb(&"yarrow"), "used yarrow with none in the inventory")
+	for kind in HerbPlant.KINDS:
+		_check(GameState.count(kind) == 0, "%s was not spent" % kind)
+
+
+## A plant of `kind` with no other plant in interact range, so _interact() can only hit it.
+func _isolated_herb(world: Node, kind: StringName) -> HerbPlant:
+	var herbs: Array[HerbPlant] = []
+	for child in world.get_node("Entities").get_children():
+		if child is HerbPlant:
+			herbs.append(child)
+	for herb in herbs:
+		if herb.kind != kind:
+			continue
+		var crowded := herbs.any(func(other: HerbPlant) -> bool:
+			return other != herb and other.position.distance_to(herb.position) < 60.0)
+		if not crowded:
+			return herb
+	return null
 
 
 ## Waits for pickups to pop out and arm, then walks the player over each one.
