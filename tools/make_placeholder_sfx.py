@@ -253,6 +253,20 @@ def ui_hover(rng, p):
     return env(osc(0.04, lambda t: 880 * p), 0.002, 3)
 
 
+def ui_inventory_open(rng, p):
+    # Leather satchel flap: a soft rustle, then a buckle clink.
+    flap = swell(lowpass(noise(0.22, rng), 0.12 * p), 0.3)
+    clink = env(osc(0.09, lambda t: 2100 * p), 0.0005, 4)
+    return mix((flap, 0), (scale(clink, 0.35), 0.16), (scale(clink, 0.2), 0.2))
+
+
+def ui_inventory_close(rng, p):
+    # Flap folding shut: a short rustle and a dull leather thump.
+    flap = swell(lowpass(noise(0.16, rng), 0.1 * p), 0.6)
+    thump = env(lowpass(osc(0.1, lambda t: 140 * p * (1 - 0.3 * t)), 0.2), 0.002, 3)
+    return mix((scale(flap, 0.8), 0), (thump, 0.12))
+
+
 # event_id -> (recipe, number of variations)
 RECIPES = {
     "footstep": (footstep, 4), "axe_swing": (axe_swing, 3), "axe_hit_wood": (axe_hit_wood, 3),
@@ -267,6 +281,7 @@ RECIPES = {
     "campfire_add_wood": (campfire_add_wood, 2), "campfire_extinguish": (campfire_extinguish, 1),
     "campfire_loop": (campfire_loop, 1), "war_horn": (war_horn, 1), "ambience_wind": (ambience_wind, 1),
     "ui_click": (ui_click, 1), "ui_hover": (ui_hover, 1),
+    "ui_inventory_open": (ui_inventory_open, 1), "ui_inventory_close": (ui_inventory_close, 1),
 }
 
 

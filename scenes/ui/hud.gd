@@ -1,6 +1,7 @@
 class_name Hud
 extends CanvasLayer
-## In-game HUD: health/hunger bars, inventory, day counter, messages and the game-over panel.
+## In-game HUD: health/hunger bars, wood/meat counts, the inventory panel, day counter, messages
+## and the game-over panel.
 
 signal restart_requested
 signal menu_requested
@@ -9,6 +10,7 @@ var _message_tween: Tween
 
 @onready var _health_bar: ProgressBar = %HealthBar
 @onready var _hunger_bar: ProgressBar = %HungerBar
+@onready var inventory: InventoryPanel = %InventoryPanel
 @onready var _inventory_label: Label = %InventoryLabel
 @onready var _day_label: Label = %DayLabel
 @onready var _message_label: Label = %MessageLabel
@@ -47,6 +49,8 @@ func show_message(text: String) -> void:
 
 
 func show_game_over(days_survived: int) -> void:
+	inventory.close()
+	inventory.can_open = false
 	_summary_label.text = "You survived %d day%s." % [days_survived, "" if days_survived == 1 else "s"]
 	_game_over_panel.show()
 	_restart_button.grab_focus()
@@ -63,12 +67,7 @@ func _on_hunger_changed(current: float, maximum: float) -> void:
 
 
 func _refresh_inventory() -> void:
-	var herbs: PackedStringArray = []
-	for i in HerbPlant.KINDS.size():
-		var kind := HerbPlant.KINDS[i]
-		herbs.append("[%d] %s %d" % [i + 1, HerbPlant.display_name(kind), GameState.count(kind)])
-	_inventory_label.text = "Wood %d    Meat %d\n%s" % [
-			GameState.count(&"wood"), GameState.count(&"meat"), "  ".join(herbs)]
+	_inventory_label.text = "Wood %d    Meat %d" % [GameState.count(&"wood"), GameState.count(&"meat")]
 
 
 func _on_time_of_day_changed(day: int, is_night: bool) -> void:

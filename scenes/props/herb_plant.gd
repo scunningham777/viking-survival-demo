@@ -5,11 +5,6 @@ extends Node2D
 
 ## Every herb variety, in hotkey order (1, 2, 3).
 const KINDS: Array[StringName] = [&"yarrow", &"angelica", &"wolfsbane"]
-const DISPLAY_NAMES: Dictionary[StringName, String] = {
-	&"yarrow": "Yarrow",
-	&"angelica": "Angelica",
-	&"wolfsbane": "Wolfsbane",
-}
 
 @export var kind: StringName = &"yarrow"
 @export var regrow_sec := 75.0
@@ -20,10 +15,6 @@ var _regrow_timer := 0.0
 var _sway_time := 0.0
 
 @onready var _interact_zone: Area2D = $InteractZone
-
-
-static func display_name(herb_kind: StringName) -> String:
-	return DISPLAY_NAMES.get(herb_kind, String(herb_kind).capitalize())
 
 
 func _ready() -> void:
@@ -45,7 +36,7 @@ func interact(_player: Player) -> void:
 		return
 	GameState.add(kind)
 	AudioManager.play_at(StringName("herb_%s_pick" % kind), global_position)
-	GameState.notify("Picked %s" % display_name(kind))
+	GameState.notify("Picked %s" % Items.display_name(kind))
 	_regrow_timer = regrow_sec
 	_set_grown(false)
 

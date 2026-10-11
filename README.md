@@ -11,13 +11,16 @@ sound before any real assets exist.
 1. Install [Godot 4.7.x](https://godotengine.org/download) (standard build, not .NET).
 2. Import → select this folder's `project.godot` → **Run** (F5).
 
-Controls: **WASD/arrows** move · **Space/left click** swing axe · **E** feed the fire / harvest herbs · **F** eat meat ·
-**1/2/3** use herbs (D-pad left/up/right) · **Esc** menu · gamepad supported.
+Controls: **WASD/arrows** move · **Space/left click** swing axe · **F** feed the fire / harvest herbs · **E** eat meat ·
+**1/2/3** use herbs (D-pad left/up/right) · **I** inventory (Back) · **Esc** menu · gamepad supported.
 
 ### Loop
 
 Chop trees for wood → keep the campfire burning (it heals you) → wolves come at night (a war horn sounds) → kill them for
 meat → eat before hunger empties. Survive as many days as you can.
+
+Press **I** to open the inventory (the game pauses): a grid of everything you're carrying. Click an item to see what it
+does. The satchel opening and closing plays `ui_inventory_open` / `ui_inventory_close`.
 
 Wild herbs grow around the map and regrow after you pick them:
 
@@ -61,10 +64,11 @@ Every button in the game automatically gets `ui_hover` / `ui_click`.
 ```
 autoload/        AudioManager (sound events, pooling, loops, music) and GameState (inventory, day/night)
 audio/           SoundEvent / SoundBank resources, sound_bank.tres, events/<id>/ audio folders
+data/            item definitions (names, descriptions, inventory order)
 scenes/actors/   player, wolf
 scenes/props/    pine_tree, pickup, campfire
 scenes/world/    world: level generation, day/night cycle, wolf spawning
-scenes/ui/       main menu, sound browser, HUD
+scenes/ui/       main menu, sound browser, HUD, inventory panel
 tests/           headless smoke test
 tools/           placeholder sound generator
 ```

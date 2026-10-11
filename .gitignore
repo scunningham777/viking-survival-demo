@@ -6,3 +6,6 @@
 /builds/
 *.pck
 *.zip
+
+# Claude Code worktrees
+.claude/worktrees/

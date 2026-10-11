@@ -102,6 +102,7 @@ func _exercise_world(world: Node) -> void:
 		_check(player.hunger > 10.0 and GameState.count(&"meat") == 0, "eating meat failed")
 
 	await _exercise_herbs(world, player)
+	await _exercise_inventory(world)
 
 	# Night transition and death flow.
 	world._begin_phase(1, true)
@@ -110,6 +111,8 @@ func _exercise_world(world: Node) -> void:
 	await _frames(3)
 	_check(player.is_dead, "player did not die")
 	_check(world.get_node("HUD/Root/GameOverPanel").visible, "game over panel not shown")
+	var inventory := (world.get_node("HUD") as Hud).inventory
+	_check(not inventory.can_open, "inventory can still open after death")
 
 
 ## Harvests one plant of each herb variety with the interact key, then uses each herb.
@@ -136,6 +139,35 @@ func _exercise_herbs(world: Node, player: Player) -> void:
 	_check(not player.use_herb(&"yarrow"), "used yarrow with none in the inventory")
 	for kind in HerbPlant.KINDS:
 		_check(GameState.count(kind) == 0, "%s was not spent" % kind)
+
+
+## Opens the inventory, checks the grid contents, clicks a slot and closes it again.
+func _exercise_inventory(world: Node) -> void:
+	var inventory := (world.get_node("HUD") as Hud).inventory
+	GameState.add(&"wood", 3)
+	GameState.add(&"yarrow")
+	GameState.spend(&"meat", GameState.count(&"meat"))
+	inventory.open()
+	await _frames(3)
+	_check(inventory.visible and get_tree().paused, "inventory did not open and pause the game")
+	var shown := inventory.shown_items()
+	_check(shown.find(&"wood") != -1 and shown.find(&"wood") < shown.find(&"yarrow"),
+			"inventory grid order wrong: %s" % [shown])
+	_check(&"meat" not in shown, "inventory shows an item with a count of 0")
+
+	var yarrow_slot: Button = inventory._slot_for(&"yarrow")
+	_check(yarrow_slot != null, "no slot for yarrow")
+	if yarrow_slot:
+		yarrow_slot.pressed.emit()
+		var name_label := inventory.get_node("%NameLabel") as Label
+		_check(inventory.selected_item == &"yarrow" and name_label.text == "Yarrow", "clicking a slot did not select it")
+		_check(not (inventory.get_node("%DescriptionLabel") as Label).text.is_empty(), "no item description shown")
+	GameState.spend(&"yarrow")
+	_check(inventory.selected_item.is_empty(), "selection kept after the item ran out")
+
+	inventory.close()
+	await _frames(3)
+	_check(not inventory.visible and not get_tree().paused, "inventory did not close and unpause")
 
 
 ## A plant of `kind` with no other plant in interact range, so _interact() can only hit it.

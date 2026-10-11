@@ -315,6 +315,30 @@ max_instances = 1
 max_distance = 900.0
 notes = "Button hover."
 
+[sub_resource type="Resource" id="SoundEvent_ui_inventory_close"]
+script = ExtResource("2_event")
+id = &"ui_inventory_close"
+bus = &"UI"
+volume_db = -3.0
+pitch_jitter = 0.04
+volume_jitter_db = 0.0
+min_interval_sec = 0.1
+max_instances = 1
+max_distance = 900.0
+notes = "Closing the inventory – satchel flap folding shut."
+
+[sub_resource type="Resource" id="SoundEvent_ui_inventory_open"]
+script = ExtResource("2_event")
+id = &"ui_inventory_open"
+bus = &"UI"
+volume_db = -3.0
+pitch_jitter = 0.04
+volume_jitter_db = 0.0
+min_interval_sec = 0.1
+max_instances = 1
+max_distance = 900.0
+notes = "Opening the inventory – leather satchel flap and buckle."
+
 [sub_resource type="Resource" id="SoundEvent_war_horn"]
 script = ExtResource("2_event")
 id = &"war_horn"
@@ -389,4 +413,4 @@ notes = "Wolf yelp when hit."
 
 [resource]
 script = ExtResource("1_bank")
-events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_herb_angelica_pick"), SubResource("SoundEvent_herb_angelica_use"), SubResource("SoundEvent_herb_wolfsbane_pick"), SubResource("SoundEvent_herb_wolfsbane_use"), SubResource("SoundEvent_herb_wolfsbane_wear_off"), SubResource("SoundEvent_herb_yarrow_pick"), SubResource("SoundEvent_herb_yarrow_use"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt")])
+events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_herb_angelica_pick"), SubResource("SoundEvent_herb_angelica_use"), SubResource("SoundEvent_herb_wolfsbane_pick"), SubResource("SoundEvent_herb_wolfsbane_use"), SubResource("SoundEvent_herb_wolfsbane_wear_off"), SubResource("SoundEvent_herb_yarrow_pick"), SubResource("SoundEvent_herb_yarrow_use"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_ui_inventory_close"), SubResource("SoundEvent_ui_inventory_open"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt")])
