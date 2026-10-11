@@ -15,8 +15,8 @@ const NAMES: Dictionary[StringName, String] = {
 }
 
 const DESCRIPTIONS: Dictionary[StringName, String] = {
-	&"wood": "Split pine logs from felled trees. Feed the campfire (F) to keep it burning through the night.",
-	&"meat": "Raw meat from a slain wolf. Eat it (E) to fill your belly.",
+	&"wood": "Split pine logs from felled trees. Feed the campfire (E) to keep it burning through the night.",
+	&"meat": "Raw meat from a slain wolf. Eat it (F) to fill your belly.",
 	&"yarrow": "A feathery wound herb. Crushed into a poultice, it heals your injuries. Use with 1.",
 	&"angelica": "A sweet, crunchy stalk that takes the edge off hunger. Use with 2.",
 	&"wolfsbane": "Deadly poison. Smear it on your axe to deal double damage for a short time. Use with 3.",

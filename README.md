@@ -11,7 +11,7 @@ sound before any real assets exist.
 1. Install [Godot 4.7.x](https://godotengine.org/download) (standard build, not .NET).
 2. Import → select this folder's `project.godot` → **Run** (F5).
 
-Controls: **WASD/arrows** move · **Space/left click** swing axe · **F** feed the fire / harvest herbs · **E** eat meat ·
+Controls: **WASD/arrows** move · **Space/left click** swing axe · **E** feed the fire / harvest herbs · **F** eat meat ·
 **1/2/3** use herbs (D-pad left/up/right) · **I** inventory (Back) · **Esc** menu · gamepad supported.
 
 ### Loop

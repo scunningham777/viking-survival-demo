@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 ## Top-down viking. WASD / arrows / left stick to move, Space or click to swing
-## the axe, F to feed the campfire / harvest herbs, E to eat meat, 1–3 to use herbs.
+## the axe, E to feed the campfire / harvest herbs, F to eat meat, 1–3 to use herbs.
 ## Placeholder visuals are drawn in _draw(); swap in a Sprite2D/AnimatedSprite2D later.
 
 signal health_changed(current: float, maximum: float)
