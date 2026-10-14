@@ -67,7 +67,8 @@ func _on_hunger_changed(current: float, maximum: float) -> void:
 
 
 func _refresh_inventory() -> void:
-	_inventory_label.text = "Wood %d    Meat %d" % [GameState.count(&"wood"), GameState.count(&"meat")]
+	_inventory_label.text = "Wood %d    Meat %d    Cooked %d" % [
+			GameState.count(&"wood"), GameState.count(&"meat"), GameState.count(&"cooked_meat")]
 
 
 func _on_time_of_day_changed(day: int, is_night: bool) -> void:

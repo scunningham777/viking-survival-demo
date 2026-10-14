@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/props/cooking_spit.gd" id="1_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 14.0
+
+[node name="CookingSpit" type="Node2D"]
+script = ExtResource("1_script")
+input_item = &"meat"
+output_item = &"cooked_meat"
+craft_time_sec = 4.0
+missing_input_message = "No raw meat to cook"
+needs_heat_message = "Light the fire to cook"
+busy_message = "Something's already cooking"
+start_sound = &"spit_place"
+loop_sound = &"spit_sizzle_loop"
+done_sound = &"spit_done"
+
+[node name="InteractZone" type="Area2D" parent="."]
+position = Vector2(0, -8)
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
+shape = SubResource("CircleShape2D_interact")

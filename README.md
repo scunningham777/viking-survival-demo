@@ -19,6 +19,11 @@ Controls: **WASD/arrows** move · **Space/left click** swing axe · **E** feed t
 Chop trees for wood → keep the campfire burning (it heals you) → wolves come at night (a war horn sounds) → kill them for
 meat → eat before hunger empties. Survive as many days as you can.
 
+**Crafting** happens at fixed stations. The first is the **cooking spit** beside the campfire: press **E** at it with raw
+meat while the fire is lit, and after a few seconds cooked meat pops out (restores 60 hunger vs 35 raw; **F** eats cooked
+meat first). Sounds: `spit_place`, `spit_sizzle_loop` (positional), `spit_done`, `pickup_cooked_meat`. New stations are
+new scenes using `scenes/props/crafting_station.gd` with different exports (input, output, time, heat source, sounds).
+
 Press **I** to open the inventory (the game pauses): a grid of everything you're carrying. Click an item to see what it
 does. The satchel opening and closing plays `ui_inventory_open` / `ui_inventory_close`.
 
@@ -66,7 +71,7 @@ autoload/        AudioManager (sound events, pooling, loops, music) and GameStat
 audio/           SoundEvent / SoundBank resources, sound_bank.tres, events/<id>/ audio folders
 data/            item definitions (names, descriptions, inventory order)
 scenes/actors/   player, wolf
-scenes/props/    pine_tree, pickup, campfire
+scenes/props/    pine_tree, pickup, campfire, herb_plant, crafting_station (+ cooking_spit)
 scenes/world/    world: level generation, day/night cycle, wolf spawning
 scenes/ui/       main menu, sound browser, HUD, inventory panel
 tests/           headless smoke test

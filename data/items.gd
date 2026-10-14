@@ -4,11 +4,12 @@ extends RefCounted
 ## GameState holds the counts; this holds what each item *is*.
 
 ## Inventory display order.
-const ORDER: Array[StringName] = [&"wood", &"meat", &"yarrow", &"angelica", &"wolfsbane"]
+const ORDER: Array[StringName] = [&"wood", &"meat", &"cooked_meat", &"yarrow", &"angelica", &"wolfsbane"]
 
 const NAMES: Dictionary[StringName, String] = {
 	&"wood": "Wood",
 	&"meat": "Wolf meat",
+	&"cooked_meat": "Cooked meat",
 	&"yarrow": "Yarrow",
 	&"angelica": "Angelica",
 	&"wolfsbane": "Wolfsbane",
@@ -16,7 +17,8 @@ const NAMES: Dictionary[StringName, String] = {
 
 const DESCRIPTIONS: Dictionary[StringName, String] = {
 	&"wood": "Split pine logs from felled trees. Feed the campfire (E) to keep it burning through the night.",
-	&"meat": "Raw meat from a slain wolf. Eat it (F) to fill your belly.",
+	&"meat": "Raw meat from a slain wolf. Eat it (F), or roast it on the spit by the fire for a better meal.",
+	&"cooked_meat": "Wolf meat roasted on the spit. Far more filling than raw – eaten first when you press F.",
 	&"yarrow": "A feathery wound herb. Crushed into a poultice, it heals your injuries. Use with 1.",
 	&"angelica": "A sweet, crunchy stalk that takes the edge off hunger. Use with 2.",
 	&"wolfsbane": "Deadly poison. Smear it on your axe to deal double damage for a short time. Use with 3.",

@@ -267,11 +267,45 @@ def ui_inventory_close(rng, p):
     return mix((scale(flap, 0.8), 0), (thump, 0.12))
 
 
+def spit_place(rng, p):
+    # Meat skewered onto the spit: a wet slap, then the bar dropping into the forks.
+    slap = env(lowpass(noise(0.1, rng), 0.15 * p), 0.002, 3)
+    clack = lambda f: env(osc(0.06, lambda t: f * p), 0.001, 5)
+    return mix((slap, 0), (scale(clack(360), 0.6), 0.12), (scale(clack(300), 0.4), 0.17))
+
+
+def sizzle(sec, rng, density=60):
+    """Fat sizzling: bright hiss with a fluttering level and spitting pops."""
+    hiss = highpass(lowpass(noise(sec, rng), 0.6), 0.25)
+    flutter = [0.55 + 0.25 * math.sin(i / SR * 11.0) + 0.2 * math.sin(i / SR * 3.1) for i in range(len(hiss))]
+    pops = [(scale(env(highpass(noise(0.01, rng), 0.5), 0.0005, 4), rng.uniform(0.4, 1.2)), rng.random() * (sec - 0.02))
+            for _ in range(int(density * sec))]
+    return mix(([h * f * 0.5 for h, f in zip(hiss, flutter)], 0), *pops)
+
+
+def spit_sizzle_loop(rng, p):
+    return fade_edges(sizzle(3.0, rng), 0.03)
+
+
+def spit_done(rng, p):
+    # A last flare of sizzle that dies away, and the spit lifted off its forks.
+    flare = env(sizzle(0.8, rng, 40), 0.01, 2)
+    lift = env(osc(0.08, lambda t: 330 * p), 0.001, 5)
+    return mix((flare, 0), (scale(lift, 0.5), 0.5))
+
+
+def pickup_cooked_meat(rng, p):
+    return mix((env(lowpass(noise(0.16, rng), 0.12), 0.01, 2), 0),
+               (scale(env(osc(0.16, lambda t: 300 * p - 60 * t), 0.01, 2), 0.5), 0))
+
+
 # event_id -> (recipe, number of variations)
 RECIPES = {
     "footstep": (footstep, 4), "axe_swing": (axe_swing, 3), "axe_hit_wood": (axe_hit_wood, 3),
     "tree_fall": (tree_fall, 1), "player_hurt": (player_hurt, 3), "player_death": (player_death, 1),
     "eat": (eat, 2), "pickup_wood": (pickup_wood, 2), "pickup_meat": (pickup_meat, 2),
+    "pickup_cooked_meat": (pickup_cooked_meat, 2), "spit_place": (spit_place, 2),
+    "spit_sizzle_loop": (spit_sizzle_loop, 1), "spit_done": (spit_done, 1),
     "herb_yarrow_pick": (herb_yarrow_pick, 3), "herb_angelica_pick": (herb_angelica_pick, 3),
     "herb_wolfsbane_pick": (herb_wolfsbane_pick, 2), "herb_yarrow_use": (herb_yarrow_use, 2),
     "herb_angelica_use": (herb_angelica_use, 2), "herb_wolfsbane_use": (herb_wolfsbane_use, 1),

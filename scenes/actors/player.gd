@@ -14,6 +14,8 @@ signal died
 @export var hunger_drain_per_sec := 1.2
 @export var starving_damage_per_sec := 4.0
 @export var meat_hunger_restore := 35.0
+## Cooked meat (from the cooking spit) is eaten before raw meat.
+@export var cooked_meat_hunger_restore := 60.0
 @export_group("Herbs")
 @export var yarrow_heal := 30.0
 @export var angelica_hunger_restore := 20.0
@@ -157,22 +159,30 @@ func _bodies_in_attack_range() -> Array[Node2D]:
 	return bodies
 
 
+## Interacts with the nearest interactable in reach (the campfire and spit sit side by side).
 func _interact() -> void:
+	var nearest: Node2D
 	for area in _interact_area.get_overlapping_areas():
 		var target := area.get_parent()
-		if target.has_method(&"interact"):
-			target.interact(self)
-			return
+		if target.has_method(&"interact") and (nearest == null
+				or global_position.distance_to(area.global_position)
+				< global_position.distance_to(nearest.global_position)):
+			nearest = area
+	if nearest:
+		nearest.get_parent().interact(self)
 
 
 func _eat() -> void:
 	if hunger >= max_hunger - 1.0:
 		GameState.notify("Not hungry")
 		return
-	if not GameState.spend(&"meat"):
-		GameState.notify("No meat – hunt wolves")
-		return
-	hunger = minf(hunger + meat_hunger_restore, max_hunger)
+	var restore := cooked_meat_hunger_restore
+	if not GameState.spend(&"cooked_meat"):
+		restore = meat_hunger_restore
+		if not GameState.spend(&"meat"):
+			GameState.notify("No meat – hunt wolves")
+			return
+	hunger = minf(hunger + restore, max_hunger)
 	hunger_changed.emit(hunger, max_hunger)
 	AudioManager.play(&"eat")
 

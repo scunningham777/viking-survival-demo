@@ -26,6 +26,12 @@ func _draw() -> void:
 			draw_circle(Vector2(9, -9), 2.0, Color(0.95, 0.93, 0.88))
 			draw_circle(Vector2(-1, 1), 7.0, Color(0.75, 0.25, 0.25))
 			draw_circle(Vector2(-3, 0), 2.5, Color(0.92, 0.75, 0.7))
+		&"cooked_meat":
+			draw_line(Vector2(3, -3), Vector2(9, -9), Color(0.95, 0.93, 0.88), 2.5)
+			draw_circle(Vector2(9, -9), 2.0, Color(0.95, 0.93, 0.88))
+			draw_circle(Vector2(-1, 1), 7.0, Color(0.52, 0.3, 0.14))
+			draw_line(Vector2(-6, -1), Vector2(3, 4), Color(0.32, 0.17, 0.07), 1.5)
+			draw_line(Vector2(-5, 3), Vector2(2, 7), Color(0.32, 0.17, 0.07), 1.5)
 		&"yarrow":
 			for x in [-5.0, 0.0, 5.0]:
 				draw_line(Vector2(x * 0.4, 10), Vector2(x, -4 - absf(x) * 0.5), stem, 1.5)

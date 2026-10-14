@@ -42,5 +42,8 @@ func _draw() -> void:
 		&"meat":
 			draw_circle(Vector2.ZERO, 5.0, Color(0.75, 0.25, 0.25))
 			draw_line(Vector2(3, -3), Vector2(8, -8), Color(0.95, 0.93, 0.88), 2.0)
+		&"cooked_meat":
+			draw_circle(Vector2.ZERO, 5.0, Color(0.52, 0.3, 0.14))
+			draw_line(Vector2(3, -3), Vector2(8, -8), Color(0.95, 0.93, 0.88), 2.0)
 		_:
 			draw_circle(Vector2.ZERO, 5.0, Color.MAGENTA)

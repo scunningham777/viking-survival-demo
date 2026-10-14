@@ -103,6 +103,7 @@ func _exercise_world(world: Node) -> void:
 
 	await _exercise_herbs(world, player)
 	await _exercise_inventory(world)
+	await _exercise_cooking(world, player, campfire)
 
 	# Night transition and death flow.
 	world._begin_phase(1, true)
@@ -168,6 +169,36 @@ func _exercise_inventory(world: Node) -> void:
 	inventory.close()
 	await _frames(3)
 	_check(not inventory.visible and not get_tree().paused, "inventory did not close and unpause")
+
+
+## Cooks raw meat on the spit (only while the fire is lit), collects it and eats it.
+func _exercise_cooking(world: Node, player: Player, campfire: Node) -> void:
+	var spit := world.get_node("Entities/CookingSpit") as CraftingStation
+	spit.craft_time_sec = 0.3
+	GameState.spend(&"meat", GameState.count(&"meat"))
+	GameState.add(&"meat")
+	# Stand right at the spit, so it beats the campfire as the nearest interactable.
+	player.global_position = spit.global_position + Vector2(0, 2)
+	await _frames(3)
+
+	campfire._set_lit(false)
+	player._interact()
+	_check(not spit.is_crafting and GameState.count(&"meat") == 1, "spit cooked with the fire out")
+	campfire._set_lit(true)
+	player._interact()
+	_check(spit.is_crafting and GameState.count(&"meat") == 0, "spit did not start cooking")
+	await _seconds(0.5)
+	_check(not spit.is_crafting, "spit did not finish cooking")
+	await _collect_pickups(world, player)
+	_check(GameState.count(&"cooked_meat") == 1, "cooked meat was not picked up")
+
+	GameState.add(&"meat")
+	player.hunger = 10.0
+	player._eat()
+	_check(GameState.count(&"cooked_meat") == 0 and GameState.count(&"meat") == 1,
+			"eating did not prefer cooked meat")
+	_check(is_equal_approx(player.hunger, 10.0 + player.cooked_meat_hunger_restore),
+			"cooked meat restored %.1f hunger" % (player.hunger - 10.0))
 
 
 ## A plant of `kind` with no other plant in interact range, so _interact() can only hit it.
