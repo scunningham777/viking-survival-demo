@@ -93,6 +93,7 @@ layout_mode = 2
 theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Margin/Layout"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Inventory"
@@ -114,6 +115,12 @@ columns = 4
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
+
+[node name="RecipeList" type="VBoxContainer" parent="Margin/Layout/Body/Details"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 2
 
 [node name="Header" type="HBoxContainer" parent="Margin/Layout/Body/Details"]
 layout_mode = 2
@@ -149,6 +156,20 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Select an item to see what it does."
 autowrap_mode = 3
+
+[node name="NeedsLabel" type="Label" parent="Margin/Layout/Body/Details"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="CraftButton" type="Button" parent="Margin/Layout/Body/Details"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Craft"
 
 [node name="Hint" type="Label" parent="Margin/Layout"]
 modulate = Color(1, 1, 1, 0.6)

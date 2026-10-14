@@ -26,6 +26,7 @@ func _ready() -> void:
 	GameState.inventory_changed.connect(_refresh_inventory)
 	GameState.time_of_day_changed.connect(_on_time_of_day_changed)
 	GameState.message.connect(show_message)
+	GameState.craft_menu_requested.connect(inventory.open_station)
 	_restart_button.pressed.connect(restart_requested.emit)
 	_menu_button.pressed.connect(menu_requested.emit)
 	_refresh_inventory()

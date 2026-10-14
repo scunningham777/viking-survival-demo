@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="3_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" path="res://scenes/props/cooking_spit.tscn" id="5_spit"]
+[ext_resource type="PackedScene" path="res://scenes/props/herb_mortar.tscn" id="6_mortar"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_script")
@@ -19,6 +20,9 @@ y_sort_enabled = true
 [node name="CookingSpit" parent="Entities" node_paths=PackedStringArray("heat_source") instance=ExtResource("5_spit")]
 position = Vector2(50, 4)
 heat_source = NodePath("../Campfire")
+
+[node name="HerbMortar" parent="Entities" instance=ExtResource("6_mortar")]
+position = Vector2(-50, 4)
 
 [node name="Player" parent="Entities" instance=ExtResource("3_player")]
 position = Vector2(0, 50)

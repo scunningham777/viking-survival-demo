@@ -12,28 +12,36 @@ sound before any real assets exist.
 2. Import → select this folder's `project.godot` → **Run** (F5).
 
 Controls: **WASD/arrows** move · **Space/left click** swing axe · **E** feed the fire / harvest herbs · **F** eat meat ·
-**1/2/3** use herbs (D-pad left/up/right) · **I** inventory (Back) · **Esc** menu · gamepad supported.
+**1/2/3** use herb remedies (D-pad left/up/right) · **I** inventory (Back) · **Esc** menu · gamepad supported.
 
 ### Loop
 
 Chop trees for wood → keep the campfire burning (it heals you) → wolves come at night (a war horn sounds) → kill them for
 meat → eat before hunger empties. Survive as many days as you can.
 
-**Crafting** happens at fixed stations. The first is the **cooking spit** beside the campfire: press **E** at it with raw
-meat while the fire is lit, and after a few seconds cooked meat pops out (restores 60 hunger vs 35 raw; **F** eats cooked
-meat first). Sounds: `spit_place`, `spit_sizzle_loop` (positional), `spit_done`, `pickup_cooked_meat`. New stations are
-new scenes using `scenes/props/crafting_station.gd` with different exports (input, output, time, heat source, sounds).
+**Crafting** happens at fixed stations beside the campfire:
+
+- **Cooking spit** (right of the fire, needs it lit): press **E** with raw meat and after a few seconds cooked meat pops
+  out (restores 60 hunger vs 35 raw; **F** eats cooked meat first). Sounds: `spit_place`, `spit_sizzle_loop`
+  (positional), `spit_done`, `pickup_cooked_meat`.
+- **Herb mortar** (left of the fire): **E** opens the crafting screen – the inventory grid plus the mortar's recipes.
+  Pick a recipe (or click a herb in the grid), then **Grind**; the panel closes and the remedy lands in your inventory
+  after a couple of seconds. Sounds: `mortar_place`, `mortar_grind_loop` (positional), `mortar_done`.
+
+Stations use `scenes/props/crafting_station.gd`; recipes are `Recipe` resources (`data/recipe.gd`: inputs, output,
+time) listed on the station. One recipe crafts straight away on **E**; several open the crafting screen. A new station
+is a new scene with different exports (name, verb, recipes, heat source, sounds) and its own `_draw()`.
 
 Press **I** to open the inventory (the game pauses): a grid of everything you're carrying. Click an item to see what it
 does. The satchel opening and closing plays `ui_inventory_open` / `ui_inventory_close`.
 
-Wild herbs grow around the map and regrow after you pick them:
+Wild herbs grow around the map and regrow after you pick them. Raw herbs can't be used – grind them at the mortar:
 
-| Herb | Key | Effect | Sound events |
-|---|---|---|---|
-| Yarrow (white flowers) | 1 | Heals 30 | `herb_yarrow_pick`, `herb_yarrow_use` |
-| Angelica (tall green umbels) | 2 | Restores 20 hunger | `herb_angelica_pick`, `herb_angelica_use` |
-| Wolfsbane (purple spikes) | 3 | Poisons the axe: double damage for 20s | `herb_wolfsbane_pick`, `herb_wolfsbane_use`, `herb_wolfsbane_wear_off` |
+| Herb | Remedy | Key | Effect | Sound events |
+|---|---|---|---|---|
+| Yarrow (white flowers) | Yarrow poultice | 1 | Heals 30 | `herb_yarrow_pick`, `herb_yarrow_use` |
+| Angelica (tall green umbels) | Angelica mash | 2 | Restores 20 hunger | `herb_angelica_pick`, `herb_angelica_use` |
+| Wolfsbane (purple spikes) | Wolfsbane paste | 3 | Poisons the axe: double damage for 20s | `herb_wolfsbane_pick`, `herb_wolfsbane_use`, `herb_wolfsbane_wear_off` |
 
 ## Swapping in the sound pack
 
@@ -69,9 +77,9 @@ Every button in the game automatically gets `ui_hover` / `ui_click`.
 ```
 autoload/        AudioManager (sound events, pooling, loops, music) and GameState (inventory, day/night)
 audio/           SoundEvent / SoundBank resources, sound_bank.tres, events/<id>/ audio folders
-data/            item definitions (names, descriptions, inventory order)
+data/            item definitions (names, descriptions, inventory order) and the Recipe resource
 scenes/actors/   player, wolf
-scenes/props/    pine_tree, pickup, campfire, herb_plant, crafting_station (+ cooking_spit)
+scenes/props/    pine_tree, pickup, campfire, herb_plant, crafting_station (+ cooking_spit, herb_mortar)
 scenes/world/    world: level generation, day/night cycle, wolf spawning
 scenes/ui/       main menu, sound browser, HUD, inventory panel
 tests/           headless smoke test

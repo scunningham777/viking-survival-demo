@@ -299,6 +299,34 @@ def pickup_cooked_meat(rng, p):
                (scale(env(osc(0.16, lambda t: 300 * p - 60 * t), 0.01, 2), 0.5), 0))
 
 
+def stone_tap(rng, p, freq=900):
+    """Stone-on-stone knock: short noise click plus a dull, quickly damped ring."""
+    click = env(highpass(noise(0.015, rng), 0.3), 0.0005, 5)
+    ring = env(osc(0.09, lambda t: freq * p * (1 - 0.1 * t)), 0.0005, 6)
+    return mix((click, 0), (scale(ring, 0.5), 0))
+
+
+def mortar_place(rng, p):
+    # Herbs dropped into the stone bowl, then the pestle set in.
+    return mix((scale(rustle(0.25, rng, 0.4 * p), 0.6), 0), (stone_tap(rng, p), 0.2))
+
+
+def mortar_grind_loop(rng, p):
+    # Pestle circling the bowl: gritty stone friction swelling with each stroke, plus wet crushing.
+    sec, strokes = 3.0, 4
+    grit = lowpass(highpass(noise(sec, rng), 0.05), 0.35)
+    stroke = [0.25 + 0.75 * abs(math.sin(math.pi * strokes * i / (sec * SR))) ** 2 for i in range(len(grit))]
+    crush = [(scale(env(lowpass(noise(0.05, rng), 0.12), 0.003, 3), rng.uniform(0.3, 0.7)),
+              (k + rng.uniform(0.2, 0.6)) * sec / strokes) for k in range(strokes)]
+    return fade_edges(mix(([g * w * 0.6 for g, w in zip(grit, stroke)], 0), *crush), 0.03)
+
+
+def mortar_done(rng, p):
+    # Last scrape, then the pestle knocked on the rim twice.
+    scrape = swell(lowpass(highpass(noise(0.25, rng), 0.05), 0.35), 0.4)
+    return mix((scale(scrape, 0.6), 0), (stone_tap(rng, p, 820), 0.28), (scale(stone_tap(rng, p, 820), 0.7), 0.42))
+
+
 # event_id -> (recipe, number of variations)
 RECIPES = {
     "footstep": (footstep, 4), "axe_swing": (axe_swing, 3), "axe_hit_wood": (axe_hit_wood, 3),
@@ -306,6 +334,7 @@ RECIPES = {
     "eat": (eat, 2), "pickup_wood": (pickup_wood, 2), "pickup_meat": (pickup_meat, 2),
     "pickup_cooked_meat": (pickup_cooked_meat, 2), "spit_place": (spit_place, 2),
     "spit_sizzle_loop": (spit_sizzle_loop, 1), "spit_done": (spit_done, 1),
+    "mortar_place": (mortar_place, 2), "mortar_grind_loop": (mortar_grind_loop, 1), "mortar_done": (mortar_done, 1),
     "herb_yarrow_pick": (herb_yarrow_pick, 3), "herb_angelica_pick": (herb_angelica_pick, 3),
     "herb_wolfsbane_pick": (herb_wolfsbane_pick, 2), "herb_yarrow_use": (herb_yarrow_use, 2),
     "herb_angelica_use": (herb_angelica_use, 2), "herb_wolfsbane_use": (herb_wolfsbane_use, 1),

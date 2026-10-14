@@ -132,14 +132,52 @@ func _exercise_herbs(world: Node, player: Player) -> void:
 		player._interact()
 		_check(GameState.count(kind) == 1, "picked %s plant was harvested twice" % kind)
 
+	await _exercise_mortar(world, player)
+
+
+## Grinds each harvested herb at the mortar through the crafting screen, then uses the remedies.
+func _exercise_mortar(world: Node, player: Player) -> void:
+	const PRODUCTS: Dictionary[StringName, StringName] = {
+		&"yarrow": &"yarrow_poultice", &"angelica": &"angelica_mash", &"wolfsbane": &"wolfsbane_paste",
+	}
+	var mortar := world.get_node("Entities/HerbMortar") as CraftingStation
+	var inventory := (world.get_node("HUD") as Hud).inventory
+	var craft_button := inventory.get_node("%CraftButton") as Button
+	for recipe in mortar.recipes:
+		recipe.craft_time_sec = 0.2
+	_check(not player.use_remedy(&"yarrow"), "a raw herb could be used directly")
+	player.global_position = mortar.global_position + Vector2(0, 2)
+	await _frames(3)
+
+	for herb: StringName in PRODUCTS:
+		player._interact()
+		await _frames(2)
+		_check(inventory.visible and inventory.station == mortar and get_tree().paused,
+				"mortar did not open the crafting screen")
+		inventory.select(herb)  # clicking the herb in the grid picks its recipe
+		_check(inventory.selected_recipe != null and inventory.selected_recipe.output == PRODUCTS[herb],
+				"selecting %s did not pick its recipe" % herb)
+		_check(not craft_button.disabled, "grind disabled for %s" % herb)
+		craft_button.pressed.emit()
+		_check(not inventory.visible and not get_tree().paused, "crafting screen did not close on grind")
+		_check(mortar.is_crafting and GameState.count(herb) == 0, "mortar did not start grinding %s" % herb)
+		await _seconds(0.35)
+		_check(GameState.count(PRODUCTS[herb]) == 1, "%s was not made" % PRODUCTS[herb])
+
+	# Nothing left to grind: the screen opens with the grind button disabled.
+	player._interact()
+	await _frames(2)
+	_check(inventory.visible and craft_button.disabled, "grind enabled with no herbs")
+	inventory.close()
+	await _frames(2)
+
 	player.health = 40.0
-	_check(player.use_herb(&"yarrow") and player.health > 40.0, "yarrow did not heal")
+	_check(player.use_remedy(&"yarrow_poultice") and player.health > 40.0, "yarrow poultice did not heal")
 	player.hunger = 40.0
-	_check(player.use_herb(&"angelica") and player.hunger > 40.0, "angelica did not restore hunger")
-	_check(player.use_herb(&"wolfsbane") and player.wolfsbane_time > 0.0, "wolfsbane did not poison the axe")
-	_check(not player.use_herb(&"yarrow"), "used yarrow with none in the inventory")
-	for kind in HerbPlant.KINDS:
-		_check(GameState.count(kind) == 0, "%s was not spent" % kind)
+	_check(player.use_remedy(&"angelica_mash") and player.hunger > 40.0, "angelica mash did not restore hunger")
+	_check(player.use_remedy(&"wolfsbane_paste") and player.wolfsbane_time > 0.0,
+			"wolfsbane paste did not poison the axe")
+	_check(not player.use_remedy(&"yarrow_poultice"), "used a poultice with none in the inventory")
 
 
 ## Opens the inventory, checks the grid contents, clicks a slot and closes it again.
@@ -174,7 +212,7 @@ func _exercise_inventory(world: Node) -> void:
 ## Cooks raw meat on the spit (only while the fire is lit), collects it and eats it.
 func _exercise_cooking(world: Node, player: Player, campfire: Node) -> void:
 	var spit := world.get_node("Entities/CookingSpit") as CraftingStation
-	spit.craft_time_sec = 0.3
+	spit.recipes[0].craft_time_sec = 0.3
 	GameState.spend(&"meat", GameState.count(&"meat"))
 	GameState.add(&"meat")
 	# Stand right at the spit, so it beats the campfire as the nearest interactable.

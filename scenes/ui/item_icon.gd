@@ -50,5 +50,22 @@ func _draw() -> void:
 			draw_colored_polygon(PackedVector2Array([Vector2(7, 9), Vector2(0, 4), Vector2(2, 10)]), stem)
 			for i in 4:
 				draw_circle(Vector2(0, -8 + i * 3.5), 3.0 - i * 0.3, Color(0.48, 0.28, 0.78))
+		&"yarrow_poultice":
+			# Leaf-wrapped bundle tied with twine, white flowers on top.
+			draw_circle(Vector2(0, 2), 8.0, Color(0.42, 0.58, 0.32))
+			draw_line(Vector2(-8, 2), Vector2(8, 2), Color(0.78, 0.68, 0.45), 1.5)
+			draw_line(Vector2(0, -6), Vector2(0, 10), Color(0.78, 0.68, 0.45), 1.5)
+			for x in [-3.0, 0.0, 3.0]:
+				draw_circle(Vector2(x, -7), 1.8, Color(0.96, 0.95, 0.88))
+		&"angelica_mash", &"wolfsbane_paste":
+			# Wooden bowl (mash) or clay pot (paste) filled to the brim.
+			var is_mash := item == &"angelica_mash"
+			var vessel := Color(0.55, 0.36, 0.18) if is_mash else Color(0.7, 0.42, 0.3)
+			var fill := Color(0.72, 0.82, 0.45) if is_mash else Color(0.48, 0.28, 0.78)
+			draw_colored_polygon(PackedVector2Array([
+				Vector2(-10, -2), Vector2(10, -2), Vector2(6, 9), Vector2(-6, 9),
+			]), vessel)
+			draw_set_transform(size / 2.0 + Vector2(0, -2) * s, 0.0, Vector2(s, s * 0.35))
+			draw_circle(Vector2.ZERO, 9.0, fill)
 		_:
 			draw_circle(Vector2.ZERO, 6.0, Color.MAGENTA)

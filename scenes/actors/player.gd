@@ -1,12 +1,19 @@
 class_name Player
 extends CharacterBody2D
 ## Top-down viking. WASD / arrows / left stick to move, Space or click to swing
-## the axe, E to feed the campfire / harvest herbs, F to eat meat, 1–3 to use herbs.
+## the axe, E to feed the campfire / harvest herbs, F to eat meat, 1–3 to use herb remedies.
 ## Placeholder visuals are drawn in _draw(); swap in a Sprite2D/AnimatedSprite2D later.
 
 signal health_changed(current: float, maximum: float)
 signal hunger_changed(current: float, maximum: float)
 signal died
+
+## Herb remedies in hotkey order (1, 2, 3) → the sound played when used.
+const REMEDIES: Dictionary[StringName, StringName] = {
+	&"yarrow_poultice": &"herb_yarrow_use",
+	&"angelica_mash": &"herb_angelica_use",
+	&"wolfsbane_paste": &"herb_wolfsbane_use",
+}
 
 @export var move_speed := 140.0
 @export var max_health := 100.0
@@ -16,7 +23,7 @@ signal died
 @export var meat_hunger_restore := 35.0
 ## Cooked meat (from the cooking spit) is eaten before raw meat.
 @export var cooked_meat_hunger_restore := 60.0
-@export_group("Herbs")
+@export_group("Herb remedies")
 @export var yarrow_heal := 30.0
 @export var angelica_hunger_restore := 20.0
 @export var wolfsbane_duration_sec := 20.0
@@ -86,9 +93,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed(&"eat"):
 		_eat()
 	else:
-		for i in HerbPlant.KINDS.size():
+		for i in REMEDIES.size():
 			if event.is_action_pressed(StringName("use_herb_%d" % (i + 1))):
-				use_herb(HerbPlant.KINDS[i])
+				use_remedy(REMEDIES.keys()[i])
 				return
 
 
@@ -187,33 +194,31 @@ func _eat() -> void:
 	AudioManager.play(&"eat")
 
 
-## Uses one herb from the inventory. Returns false (with a HUD message) if it had no effect.
-func use_herb(kind: StringName) -> bool:
-	if is_dead:
+## Uses one herb remedy (made at the herb mortar). Returns false (with a HUD message) if it
+## had no effect.
+func use_remedy(item: StringName) -> bool:
+	if is_dead or item not in REMEDIES:
 		return false
-	var herb_name := Items.display_name(kind)
-	if GameState.count(kind) <= 0:
-		GameState.notify("No %s – look for it in the wilds" % herb_name.to_lower())
+	if GameState.count(item) <= 0:
+		GameState.notify("No %s – grind herbs at the mortar" % Items.display_name(item).to_lower())
 		return false
-	match kind:
-		&"yarrow":
+	match item:
+		&"yarrow_poultice":
 			if health >= max_health - 1.0:
 				GameState.notify("Not wounded")
 				return false
 			heal(yarrow_heal)
-		&"angelica":
+		&"angelica_mash":
 			if hunger >= max_hunger - 1.0:
 				GameState.notify("Not hungry")
 				return false
 			hunger = minf(hunger + angelica_hunger_restore, max_hunger)
 			hunger_changed.emit(hunger, max_hunger)
-		&"wolfsbane":
+		&"wolfsbane_paste":
 			wolfsbane_time = wolfsbane_duration_sec
 			GameState.notify("Axe poisoned with wolfsbane")
-		_:
-			return false
-	GameState.spend(kind)
-	AudioManager.play(StringName("herb_%s_use" % kind))
+	GameState.spend(item)
+	AudioManager.play(REMEDIES[item])
 	return true
 
 

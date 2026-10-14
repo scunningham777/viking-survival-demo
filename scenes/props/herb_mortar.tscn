@@ -1,0 +1,60 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/props/herb_mortar.gd" id="1_script"]
+[ext_resource type="Script" path="res://data/recipe.gd" id="2_recipe"]
+
+[sub_resource type="Resource" id="Recipe_yarrow_poultice"]
+script = ExtResource("2_recipe")
+output = &"yarrow_poultice"
+inputs = Dictionary[StringName, int]({
+&"yarrow": 1
+})
+craft_time_sec = 2.0
+
+[sub_resource type="Resource" id="Recipe_angelica_mash"]
+script = ExtResource("2_recipe")
+output = &"angelica_mash"
+inputs = Dictionary[StringName, int]({
+&"angelica": 1
+})
+craft_time_sec = 2.0
+
+[sub_resource type="Resource" id="Recipe_wolfsbane_paste"]
+script = ExtResource("2_recipe")
+output = &"wolfsbane_paste"
+inputs = Dictionary[StringName, int]({
+&"wolfsbane": 1
+})
+craft_time_sec = 2.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_stone"]
+radius = 8.0
+
+[node name="HerbMortar" type="Node2D"]
+script = ExtResource("1_script")
+station_name = "Herb mortar"
+verb = "Grind"
+recipes = Array[ExtResource("2_recipe")]([SubResource("Recipe_yarrow_poultice"), SubResource("Recipe_angelica_mash"), SubResource("Recipe_wolfsbane_paste")])
+output_to_inventory = true
+busy_message = "Still grinding"
+start_sound = &"mortar_place"
+loop_sound = &"mortar_grind_loop"
+done_sound = &"mortar_done"
+
+[node name="Stone" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stone"]
+shape = SubResource("CircleShape2D_stone")
+
+[node name="InteractZone" type="Area2D" parent="."]
+position = Vector2(0, -4)
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
+shape = SubResource("CircleShape2D_interact")

@@ -459,6 +459,42 @@ max_instances = 0
 max_distance = 450.0
 notes = "Positional sizzle loop while meat cooks on the spit."
 
+[sub_resource type="Resource" id="SoundEvent_mortar_done"]
+script = ExtResource("2_event")
+id = &"mortar_done"
+bus = &"SFX"
+volume_db = -1.0
+pitch_jitter = 0.04
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 600.0
+notes = "Grinding finished – last scrape and the pestle knocked on the rim."
+
+[sub_resource type="Resource" id="SoundEvent_mortar_grind_loop"]
+script = ExtResource("2_event")
+id = &"mortar_grind_loop"
+bus = &"SFX"
+volume_db = -4.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 0
+max_distance = 450.0
+notes = "Positional stone-on-stone grinding loop while herbs are ground."
+
+[sub_resource type="Resource" id="SoundEvent_mortar_place"]
+script = ExtResource("2_event")
+id = &"mortar_place"
+bus = &"SFX"
+volume_db = -1.0
+pitch_jitter = 0.06
+volume_jitter_db = 1.0
+min_interval_sec = 0.1
+max_instances = 1
+max_distance = 600.0
+notes = "Herbs dropped into the stone mortar."
+
 [resource]
 script = ExtResource("1_bank")
-events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_herb_angelica_pick"), SubResource("SoundEvent_herb_angelica_use"), SubResource("SoundEvent_herb_wolfsbane_pick"), SubResource("SoundEvent_herb_wolfsbane_use"), SubResource("SoundEvent_herb_wolfsbane_wear_off"), SubResource("SoundEvent_herb_yarrow_pick"), SubResource("SoundEvent_herb_yarrow_use"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_ui_inventory_close"), SubResource("SoundEvent_ui_inventory_open"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt"), SubResource("SoundEvent_pickup_cooked_meat"), SubResource("SoundEvent_spit_done"), SubResource("SoundEvent_spit_place"), SubResource("SoundEvent_spit_sizzle_loop")])
+events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_herb_angelica_pick"), SubResource("SoundEvent_herb_angelica_use"), SubResource("SoundEvent_herb_wolfsbane_pick"), SubResource("SoundEvent_herb_wolfsbane_use"), SubResource("SoundEvent_herb_wolfsbane_wear_off"), SubResource("SoundEvent_herb_yarrow_pick"), SubResource("SoundEvent_herb_yarrow_use"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_ui_inventory_close"), SubResource("SoundEvent_ui_inventory_open"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt"), SubResource("SoundEvent_pickup_cooked_meat"), SubResource("SoundEvent_spit_done"), SubResource("SoundEvent_spit_place"), SubResource("SoundEvent_spit_sizzle_loop"), SubResource("SoundEvent_mortar_done"), SubResource("SoundEvent_mortar_grind_loop"), SubResource("SoundEvent_mortar_place")])
