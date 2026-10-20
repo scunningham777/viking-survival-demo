@@ -104,6 +104,7 @@ func _exercise_world(world: Node) -> void:
 	await _exercise_herbs(world, player)
 	await _exercise_inventory(world)
 	await _exercise_cooking(world, player, campfire)
+	await _exercise_shelter(world, player)
 
 	# Night transition and death flow.
 	world._begin_phase(1, true)
@@ -237,6 +238,42 @@ func _exercise_cooking(world: Node, player: Player, campfire: Node) -> void:
 			"eating did not prefer cooked meat")
 	_check(is_equal_approx(player.hunger, 10.0 + player.cooked_meat_hunger_restore),
 			"cooked meat restored %.1f hunger" % (player.hunger - 10.0))
+
+
+## Builds the shelter's three stages with wood, then checks it slows hunger underneath.
+func _exercise_shelter(world: Node, player: Player) -> void:
+	var shelter := world.get_node("Entities/Shelter") as CraftingStation
+	for stage in shelter.recipes:
+		for phase in stage.phases:
+			phase.duration_sec = 0.06
+			if phase.interval_sec > 0.0:
+				phase.interval_sec = 0.02
+	GameState.spend(&"wood", GameState.count(&"wood"))
+	GameState.add(&"wood")
+	player.global_position = shelter.global_position + Vector2(0, 4)
+	await _frames(3)
+	_check(not player.is_sheltered, "sheltered before the shelter was built")
+
+	player._interact()
+	_check(not shelter.is_crafting and GameState.count(&"wood") == 1, "shelter stage started without enough wood")
+	GameState.add(&"wood", 5)
+	for stage in shelter.recipes.size():
+		player._interact()
+		_check(shelter.is_crafting, "shelter stage %d did not start" % (stage + 1))
+		await _seconds(0.3)
+		_check(shelter.stages_done == stage + 1, "shelter stage %d did not finish" % (stage + 1))
+	_check(shelter.is_complete and GameState.count(&"wood") == 0, "shelter not complete after 3 stages")
+	GameState.add(&"wood", 2)
+	player._interact()
+	_check(not shelter.is_crafting and GameState.count(&"wood") == 2, "finished shelter started another stage")
+
+	await _frames(3)
+	_check(player.is_sheltered, "player under the finished shelter is not sheltered")
+	_check(is_equal_approx(player.hunger_drain(), player.hunger_drain_per_sec * player.shelter_hunger_multiplier),
+			"shelter did not slow hunger")
+	player.global_position = shelter.global_position + Vector2(0, 80)
+	await _frames(3)
+	_check(not player.is_sheltered, "still sheltered after leaving the shelter")
 
 
 ## A plant of `kind` with no other plant in interact range, so _interact() can only hit it.

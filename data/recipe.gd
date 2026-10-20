@@ -2,12 +2,27 @@ class_name Recipe
 extends Resource
 ## One crafting recipe: consumes `inputs` from the inventory and produces
 ## `output_count` × `output` after `craft_time_sec`. Stations hold a list of these.
+## A recipe with no `output` produces nothing (a build stage). With `phases`, the
+## craft plays that sound sequence and lasts as long as the phases combined.
 
+## Short name for messages, e.g. "the frame". Optional.
+@export var title := ""
 @export var output: StringName
 @export var output_count := 1
 ## Item id → amount consumed.
 @export var inputs: Dictionary[StringName, int] = {}
 @export var craft_time_sec := 2.0
+## Optional sound sequence; replaces the station's loop sound and sets the craft time.
+@export var phases: Array[CraftPhase] = []
+
+
+func total_time() -> float:
+	if phases.is_empty():
+		return craft_time_sec
+	var total := 0.0
+	for phase in phases:
+		total += phase.duration_sec
+	return total
 
 
 func can_craft() -> bool:

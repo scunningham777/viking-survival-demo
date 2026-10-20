@@ -27,10 +27,15 @@ meat → eat before hunger empties. Survive as many days as you can.
 - **Herb mortar** (left of the fire): **E** opens the crafting screen – the inventory grid plus the mortar's recipes.
   Pick a recipe (or click a herb in the grid), then **Grind**; the panel closes and the remedy lands in your inventory
   after a couple of seconds. Sounds: `mortar_place`, `mortar_grind_loop` (positional), `mortar_done`.
+- **Shelter** (north of the fire): a lean-to built in three stages, **E** with 2 wood each. Standing under the finished
+  shelter halves hunger drain. Each stage plays a sequence: frame = `build_saw_loop` → `build_stake_drive`; beams =
+  `axe_hit_wood` → `build_lash`; roof = `build_thatch`. Then `build_stage_done`, and `build_complete` at the end.
 
 Stations use `scenes/props/crafting_station.gd`; recipes are `Recipe` resources (`data/recipe.gd`: inputs, output,
-time) listed on the station. One recipe crafts straight away on **E**; several open the crafting screen. A new station
-is a new scene with different exports (name, verb, recipes, heat source, sounds) and its own `_draw()`.
+time) listed on the station. One recipe crafts straight away on **E**; several open the crafting screen; `sequential`
+stations build their recipes in order as stages. A recipe can list `CraftPhase`s (`data/craft_phase.gd`: a sound and a
+duration, looped or repeated as one-shots) to play a sound sequence while it's made. A new station is a new scene with
+different exports (name, verb, recipes, heat source, sounds) and its own `_draw()`.
 
 Press **I** to open the inventory (the game pauses): a grid of everything you're carrying. Click an item to see what it
 does. The satchel opening and closing plays `ui_inventory_open` / `ui_inventory_close`.
@@ -77,9 +82,9 @@ Every button in the game automatically gets `ui_hover` / `ui_click`.
 ```
 autoload/        AudioManager (sound events, pooling, loops, music) and GameState (inventory, day/night)
 audio/           SoundEvent / SoundBank resources, sound_bank.tres, events/<id>/ audio folders
-data/            item definitions (names, descriptions, inventory order) and the Recipe resource
+data/            item definitions (names, descriptions, inventory order) and the Recipe / CraftPhase resources
 scenes/actors/   player, wolf
-scenes/props/    pine_tree, pickup, campfire, herb_plant, crafting_station (+ cooking_spit, herb_mortar)
+scenes/props/    pine_tree, pickup, campfire, herb_plant, crafting_station (+ cooking_spit, herb_mortar, shelter)
 scenes/world/    world: level generation, day/night cycle, wolf spawning
 scenes/ui/       main menu, sound browser, HUD, inventory panel
 tests/           headless smoke test

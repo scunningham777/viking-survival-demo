@@ -1,0 +1,93 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/props/shelter.gd" id="1_script"]
+[ext_resource type="Script" path="res://data/recipe.gd" id="2_recipe"]
+[ext_resource type="Script" path="res://data/craft_phase.gd" id="3_phase"]
+
+[sub_resource type="Resource" id="CraftPhase_saw"]
+script = ExtResource("3_phase")
+sound = &"build_saw_loop"
+duration_sec = 1.6
+
+[sub_resource type="Resource" id="CraftPhase_stakes"]
+script = ExtResource("3_phase")
+sound = &"build_stake_drive"
+duration_sec = 1.5
+interval_sec = 0.45
+
+[sub_resource type="Resource" id="Recipe_frame"]
+script = ExtResource("2_recipe")
+title = "the frame"
+inputs = Dictionary[StringName, int]({
+&"wood": 2
+})
+phases = Array[ExtResource("3_phase")]([SubResource("CraftPhase_saw"), SubResource("CraftPhase_stakes")])
+
+[sub_resource type="Resource" id="CraftPhase_notch"]
+script = ExtResource("3_phase")
+sound = &"axe_hit_wood"
+duration_sec = 1.1
+interval_sec = 0.36
+
+[sub_resource type="Resource" id="CraftPhase_lash"]
+script = ExtResource("3_phase")
+sound = &"build_lash"
+duration_sec = 1.9
+interval_sec = 0.6
+
+[sub_resource type="Resource" id="Recipe_beams"]
+script = ExtResource("2_recipe")
+title = "the beams"
+inputs = Dictionary[StringName, int]({
+&"wood": 2
+})
+phases = Array[ExtResource("3_phase")]([SubResource("CraftPhase_notch"), SubResource("CraftPhase_lash")])
+
+[sub_resource type="Resource" id="CraftPhase_thatch"]
+script = ExtResource("3_phase")
+sound = &"build_thatch"
+duration_sec = 3.0
+interval_sec = 0.55
+
+[sub_resource type="Resource" id="Recipe_roof"]
+script = ExtResource("2_recipe")
+title = "the roof"
+inputs = Dictionary[StringName, int]({
+&"wood": 2
+})
+phases = Array[ExtResource("3_phase")]([SubResource("CraftPhase_thatch")])
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cover"]
+size = Vector2(48, 30)
+
+[node name="Shelter" type="Node2D"]
+script = ExtResource("1_script")
+station_name = "Shelter"
+verb = "Build"
+recipes = Array[ExtResource("2_recipe")]([SubResource("Recipe_frame"), SubResource("Recipe_beams"), SubResource("Recipe_roof")])
+sequential = true
+busy_message = "Still building"
+complete_message = "The shelter is finished"
+done_sound = &"build_stage_done"
+complete_sound = &"build_complete"
+
+[node name="InteractZone" type="Area2D" parent="."]
+position = Vector2(0, -8)
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
+shape = SubResource("CircleShape2D_interact")
+
+[node name="Cover" type="Area2D" parent="."]
+position = Vector2(0, -10)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cover"]
+shape = SubResource("RectangleShape2D_cover")

@@ -19,6 +19,8 @@ const REMEDIES: Dictionary[StringName, StringName] = {
 @export var max_health := 100.0
 @export var max_hunger := 100.0
 @export var hunger_drain_per_sec := 1.2
+## Hunger drain is multiplied by this while standing under a finished shelter.
+@export var shelter_hunger_multiplier := 0.5
 @export var starving_damage_per_sec := 4.0
 @export var meat_hunger_restore := 35.0
 ## Cooked meat (from the cooking spit) is eaten before raw meat.
@@ -48,6 +50,8 @@ var facing := Vector2.DOWN
 var is_dead := false
 ## Seconds left on the wolfsbane-poisoned axe.
 var wolfsbane_time := 0.0
+## Set by a finished shelter while the player stands under it.
+var is_sheltered := false
 
 var _attack_cooldown := 0.0
 var _swing_visual := 0.0
@@ -125,8 +129,12 @@ func _update_footsteps(moved: float) -> void:
 		AudioManager.play(&"footstep")
 
 
+func hunger_drain() -> float:
+	return hunger_drain_per_sec * (shelter_hunger_multiplier if is_sheltered else 1.0)
+
+
 func _update_hunger(delta: float) -> void:
-	hunger = maxf(hunger - hunger_drain_per_sec * delta, 0.0)
+	hunger = maxf(hunger - hunger_drain() * delta, 0.0)
 	hunger_changed.emit(hunger, max_hunger)
 	if hunger <= 0.0:
 		health = maxf(health - starving_damage_per_sec * delta, 0.0)

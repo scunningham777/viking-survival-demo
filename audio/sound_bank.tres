@@ -495,6 +495,78 @@ max_instances = 1
 max_distance = 600.0
 notes = "Herbs dropped into the stone mortar."
 
+[sub_resource type="Resource" id="SoundEvent_build_complete"]
+script = ExtResource("2_event")
+id = &"build_complete"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.02
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 900.0
+notes = "Shelter finished – the structure settles with a creak and a heavy thud."
+
+[sub_resource type="Resource" id="SoundEvent_build_lash"]
+script = ExtResource("2_event")
+id = &"build_lash"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.08
+volume_jitter_db = 1.5
+min_interval_sec = 0.0
+max_instances = 2
+max_distance = 700.0
+notes = "Rope lashed tight around a beam (repeats while lashing)."
+
+[sub_resource type="Resource" id="SoundEvent_build_saw_loop"]
+script = ExtResource("2_event")
+id = &"build_saw_loop"
+bus = &"SFX"
+volume_db = -3.0
+pitch_jitter = 0.0
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 0
+max_distance = 700.0
+notes = "Hand saw cutting a log – positional loop."
+
+[sub_resource type="Resource" id="SoundEvent_build_stage_done"]
+script = ExtResource("2_event")
+id = &"build_stage_done"
+bus = &"SFX"
+volume_db = -1.0
+pitch_jitter = 0.05
+volume_jitter_db = 0.0
+min_interval_sec = 0.0
+max_instances = 1
+max_distance = 800.0
+notes = "A build stage finished – creak and settling knock."
+
+[sub_resource type="Resource" id="SoundEvent_build_stake_drive"]
+script = ExtResource("2_event")
+id = &"build_stake_drive"
+bus = &"SFX"
+volume_db = 0.0
+pitch_jitter = 0.07
+volume_jitter_db = 1.5
+min_interval_sec = 0.0
+max_instances = 2
+max_distance = 800.0
+notes = "Mallet driving a stake into the ground (repeats while building)."
+
+[sub_resource type="Resource" id="SoundEvent_build_thatch"]
+script = ExtResource("2_event")
+id = &"build_thatch"
+bus = &"SFX"
+volume_db = -2.0
+pitch_jitter = 0.08
+volume_jitter_db = 1.5
+min_interval_sec = 0.0
+max_instances = 2
+max_distance = 700.0
+notes = "Pine bough laid on the roof (repeats while thatching)."
+
 [resource]
 script = ExtResource("1_bank")
-events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_herb_angelica_pick"), SubResource("SoundEvent_herb_angelica_use"), SubResource("SoundEvent_herb_wolfsbane_pick"), SubResource("SoundEvent_herb_wolfsbane_use"), SubResource("SoundEvent_herb_wolfsbane_wear_off"), SubResource("SoundEvent_herb_yarrow_pick"), SubResource("SoundEvent_herb_yarrow_use"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_ui_inventory_close"), SubResource("SoundEvent_ui_inventory_open"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt"), SubResource("SoundEvent_pickup_cooked_meat"), SubResource("SoundEvent_spit_done"), SubResource("SoundEvent_spit_place"), SubResource("SoundEvent_spit_sizzle_loop"), SubResource("SoundEvent_mortar_done"), SubResource("SoundEvent_mortar_grind_loop"), SubResource("SoundEvent_mortar_place")])
+events = Array[ExtResource("2_event")]([SubResource("SoundEvent_ambience_wind"), SubResource("SoundEvent_axe_hit_wood"), SubResource("SoundEvent_axe_swing"), SubResource("SoundEvent_campfire_add_wood"), SubResource("SoundEvent_campfire_extinguish"), SubResource("SoundEvent_campfire_ignite"), SubResource("SoundEvent_campfire_loop"), SubResource("SoundEvent_eat"), SubResource("SoundEvent_footstep"), SubResource("SoundEvent_herb_angelica_pick"), SubResource("SoundEvent_herb_angelica_use"), SubResource("SoundEvent_herb_wolfsbane_pick"), SubResource("SoundEvent_herb_wolfsbane_use"), SubResource("SoundEvent_herb_wolfsbane_wear_off"), SubResource("SoundEvent_herb_yarrow_pick"), SubResource("SoundEvent_herb_yarrow_use"), SubResource("SoundEvent_music_day"), SubResource("SoundEvent_music_menu"), SubResource("SoundEvent_music_night"), SubResource("SoundEvent_pickup_meat"), SubResource("SoundEvent_pickup_wood"), SubResource("SoundEvent_player_death"), SubResource("SoundEvent_player_hurt"), SubResource("SoundEvent_tree_fall"), SubResource("SoundEvent_ui_click"), SubResource("SoundEvent_ui_hover"), SubResource("SoundEvent_ui_inventory_close"), SubResource("SoundEvent_ui_inventory_open"), SubResource("SoundEvent_war_horn"), SubResource("SoundEvent_wolf_bite"), SubResource("SoundEvent_wolf_death"), SubResource("SoundEvent_wolf_growl"), SubResource("SoundEvent_wolf_howl"), SubResource("SoundEvent_wolf_hurt"), SubResource("SoundEvent_pickup_cooked_meat"), SubResource("SoundEvent_spit_done"), SubResource("SoundEvent_spit_place"), SubResource("SoundEvent_spit_sizzle_loop"), SubResource("SoundEvent_mortar_done"), SubResource("SoundEvent_mortar_grind_loop"), SubResource("SoundEvent_mortar_place"), SubResource("SoundEvent_build_complete"), SubResource("SoundEvent_build_lash"), SubResource("SoundEvent_build_saw_loop"), SubResource("SoundEvent_build_stage_done"), SubResource("SoundEvent_build_stake_drive"), SubResource("SoundEvent_build_thatch")])

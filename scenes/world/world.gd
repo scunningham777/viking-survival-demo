@@ -12,8 +12,8 @@ const MAIN_MENU := "res://scenes/ui/main_menu.tscn"
 @export var clearing_radius := 150.0
 ## Plants of each herb variety (see HerbPlant.KINDS).
 @export var herbs_per_kind := 7
-## Herbs are kept out of this radius around the campfire.
-@export var herb_clearing_radius := 70.0
+## Herbs are kept out of this radius around the campfire (and the camp's crafting spots).
+@export var herb_clearing_radius := 120.0
 @export_group("Day / night")
 @export var day_length_sec := 60.0
 @export var night_length_sec := 45.0

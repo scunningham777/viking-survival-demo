@@ -327,6 +327,59 @@ def mortar_done(rng, p):
     return mix((scale(scrape, 0.6), 0), (stone_tap(rng, p, 820), 0.28), (scale(stone_tap(rng, p, 820), 0.7), 0.42))
 
 
+def build_saw_loop(rng, p):
+    # Hand saw through a log: push and pull strokes, the push a little brighter.
+    sec, strokes = 2.0, 4
+    rasp = highpass(lowpass(noise(sec, rng), 0.45), 0.12)
+    out = []
+    for i, r in enumerate(rasp):
+        phase = (i / SR) * strokes / sec % 1.0
+        push = phase < 0.5
+        level = math.sin(math.pi * (phase * 2.0 % 1.0)) ** 1.5
+        out.append(r * level * (1.0 if push else 0.7))
+    return fade_edges(out, 0.02)
+
+
+def creak(sec, p, base=95):
+    """Wooden creak: a gritty, wobbling sawtooth through a dark filter."""
+    wobble = lambda t: base * p * (1 + 0.25 * t) + 12 * math.sin(t * 90) + 6 * math.sin(t * 230)
+    return lowpass(osc(sec, wobble, "saw"), 0.07)
+
+
+def build_stake_drive(rng, p):
+    # Wooden mallet on a stake: a low thud with a woody knock.
+    thud = env(osc(0.22, lambda t: 105 * p * (1 - 0.35 * t)), 0.001, 4)
+    knock = env(lowpass(noise(0.06, rng), 0.3 * p), 0.0005, 4)
+    return mix((thud, 0), (scale(knock, 0.8), 0))
+
+
+def build_lash(rng, p):
+    # Rope pulled tight around a beam: a squeaky fibre stretch, then a short creak.
+    stretch = swell(lowpass(osc(0.35, lambda t: (480 + 220 * t) * p + 30 * math.sin(t * 160), "saw"), 0.12), 0.7)
+    fibre = swell(highpass(noise(0.35, rng), 0.3), 0.6)
+    return mix((scale(stretch, 0.5), 0), (scale(fibre, 0.3), 0), (scale(env(creak(0.2, p, 140), 0.01, 2), 0.6), 0.3))
+
+
+def build_thatch(rng, p):
+    # A pine bough laid on the roof: needles rustling, then a soft landing.
+    land = env(lowpass(noise(0.1, rng), 0.08), 0.003, 3)
+    return mix((scale(rustle(0.4, rng, 0.5 * p), 0.7), 0), (land, 0.3))
+
+
+def build_stage_done(rng, p):
+    # The new part takes the weight: a creak and a settling knock.
+    knock = env(osc(0.15, lambda t: 140 * p), 0.001, 5)
+    return mix((swell(creak(0.6, p), 0.4), 0), (scale(knock, 0.7), 0.55))
+
+
+def build_complete(rng, p):
+    # Whole structure settles: long creak, a heavy thud, boughs shifting on the roof.
+    thud = env(osc(0.4, lambda t: 70 * p * (1 - 0.3 * t)), 0.002, 3)
+    return mix((swell(creak(1.1, p, 80), 0.5), 0), (thud, 0.9),
+               (scale(env(lowpass(noise(0.3, rng), 0.1), 0.003, 2), 0.6), 0.9),
+               (scale(rustle(0.6, rng, 0.4 * p), 0.5), 1.05))
+
+
 # event_id -> (recipe, number of variations)
 RECIPES = {
     "footstep": (footstep, 4), "axe_swing": (axe_swing, 3), "axe_hit_wood": (axe_hit_wood, 3),
@@ -335,6 +388,8 @@ RECIPES = {
     "pickup_cooked_meat": (pickup_cooked_meat, 2), "spit_place": (spit_place, 2),
     "spit_sizzle_loop": (spit_sizzle_loop, 1), "spit_done": (spit_done, 1),
     "mortar_place": (mortar_place, 2), "mortar_grind_loop": (mortar_grind_loop, 1), "mortar_done": (mortar_done, 1),
+    "build_saw_loop": (build_saw_loop, 1), "build_stake_drive": (build_stake_drive, 3), "build_lash": (build_lash, 3),
+    "build_thatch": (build_thatch, 3), "build_stage_done": (build_stage_done, 2), "build_complete": (build_complete, 1),
     "herb_yarrow_pick": (herb_yarrow_pick, 3), "herb_angelica_pick": (herb_angelica_pick, 3),
     "herb_wolfsbane_pick": (herb_wolfsbane_pick, 2), "herb_yarrow_use": (herb_yarrow_use, 2),
     "herb_angelica_use": (herb_angelica_use, 2), "herb_wolfsbane_use": (herb_wolfsbane_use, 1),
