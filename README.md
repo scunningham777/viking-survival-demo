@@ -102,9 +102,17 @@ godot --headless --path . res://tests/smoke_test.tscn    # prints SMOKE TEST PAS
 
 ## Shipping as a demo / template
 
-- **Web (itch.io):** Project → Export → add *Web*, then export. The project uses the Compatibility renderer, so it runs
-  in browsers. On the web, Godot plays sounds as browser "samples": pitch and volume variation still work, but effects
-  on audio buses don't. Keep the buses effect-free, or test the effects in the web build.
+- **Builds:** `export_presets.cfg` has *Web* (single-threaded, so itch.io needs no special headers) and *Windows
+  Desktop* (one .exe with the data embedded). With the 4.7.2 export templates installed (Editor → Manage Export
+  Templates):
+  ```
+  godot --headless --path . --export-release "Web" builds/web/index.html
+  godot --headless --path . --export-release "Windows Desktop" builds/windows/VikingSurvivalSFXDemo.exe
+  ```
+  For itch.io, zip the *contents* of `builds/web/` (index.html at the root) and upload it as an HTML game.
+- **Web audio:** the project uses the Compatibility renderer, so it runs in browsers. On the web, Godot plays sounds as
+  browser "samples": pitch and volume variation still work, but effects on audio buses don't. Keep the buses
+  effect-free, or test the effects in the web build.
 - **As a template:** the code has no dependencies. Before publishing, pick a license for the code (e.g. MIT) and make
   sure the sound pack's license allows the files to be included in the download.
 
