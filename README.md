@@ -110,6 +110,8 @@ godot --headless --path . res://tests/smoke_test.tscn    # prints SMOKE TEST PAS
   godot --headless --path . --export-release "Windows Desktop" builds/windows/VikingSurvivalSFXDemo.exe
   ```
   For itch.io, zip the *contents* of `builds/web/` (index.html at the root) and upload it as an HTML game.
+  `builds/` holds a `.gdignore` so Godot doesn't import the exported files back into the project (otherwise the web
+  build's images get packed into the next export); everything else in it is git-ignored.
 - **Web audio:** the project uses the Compatibility renderer, so it runs in browsers. On the web, Godot plays sounds as
   browser "samples": pitch and volume variation still work, but effects on audio buses don't. Keep the buses
   effect-free, or test the effects in the web build.

@@ -3,7 +3,8 @@
 /android/
 
 # Exports
-/builds/
+/builds/*
+!/builds/.gdignore
 *.pck
 *.zip
 
